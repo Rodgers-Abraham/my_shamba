@@ -1,0 +1,49 @@
+name: Android Build
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.12.0' # Matches the SDK version in pubspec.yaml
+        channel: 'stable'
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Patch isar_flutter_libs
+      run: |
+        ISAR_PATH=$(flutter pub cache list | grep -oP 'isar_flutter_libs: \K.*')
+        if [ -f "$HOME/.pub-cache/hosted/pub.dev/isar_flutter_libs-3.1.0+1/android/build.gradle" ]; then
+          sed -i 's/android {/android {\n    namespace "dev.isar.isar_flutter_libs"/' $HOME/.pub-cache/hosted/pub.dev/isar_flutter_libs-3.1.0+1/android/build.gradle
+          sed -i 's/compileSdkVersion 30/compileSdkVersion 34/' $HOME/.pub-cache/hosted/pub.dev/isar_flutter_libs-3.1.0+1/android/build.gradle
+        fi
+
+    - name: Run Build Runner
+      run: dart run build_runner build --delete-conflicting-outputs
+
+    - name: Build APK
+      run: flutter build apk --release
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: release-apk
+        path: build/app/outputs/flutter-apk/app-release.apk

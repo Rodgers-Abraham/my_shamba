@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "191471603356",
+    "project_id": "my-shamba-1236b",
+    "storage_bucket": "my-shamba-1236b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:191471603356:android:ae4ae8849581bca718e759",
+        "android_client_info": {
+          "package_name": "com.example.my_shamba"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDm9XMJ8xMoR3KbEdMGmK630gFE2U4hT0Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

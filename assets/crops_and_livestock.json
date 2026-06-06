@@ -1,0 +1,226 @@
+[
+  {
+    "category": "Crops",
+    "subcategories": [
+      {
+        "name": "Cereals & Grains",
+        "items": [
+          { "name": "Maize", "types_or_varieties": ["H614D", "H6213", "H513", "DK8033", "Duma 43", "Pioneer30G19", "SC DUMA 43", "Katumani Composite"] },
+          { "name": "Wheat", "types_or_varieties": ["KS Mwamba", "Njoro BW2", "Eagle10", "Robin", "Kingbird", "Hawk"] },
+          { "name": "Rice", "types_or_varieties": ["Basmati 370", "BW 196", "Sindano", "IR 2793", "NERICA 1", "NERICA 4", "NERICA 11"] },
+          { "name": "Sorghum", "types_or_varieties": ["Gadam", "Seredo", "Serena", "KARI Mtama 1", "E1199", "Advanta 23012"] },
+          { "name": "Finger Millet", "types_or_varieties": ["U15", "P224", "KARI Millet 1", "Maridadi", "Okhale 1"] },
+          { "name": "Pearl Millet", "types_or_varieties": ["KatPM 1", "KatPM 2", "Kari PM 1"] },
+          { "name": "Barley", "types_or_varieties": ["Blackford", "Quench", "Grace", "Sabini", "Fanfare"] }
+        ]
+      },
+      {
+        "name": "Pulses & Legumes",
+        "items": [
+          { "name": "Common Beans", "types_or_varieties": ["Wairimu", "Rosecoco (GLP 2)", "Mwitemania (GLP 92)", "Mwezi Moja (GLP 1004)", "Nyayo", "Chelalang"] },
+          { "name": "Green Grams (Ndengu)", "types_or_varieties": ["Uncle", "K26 (Nylon)", "KS20", "Biashara", "N26"] },
+          { "name": "Cowpeas", "types_or_varieties": ["K80", "M66", "KVU 27-1", "Machakos 66"] },
+          { "name": "Pigeon Peas", "types_or_varieties": ["Mbaazi 1", "Mbaazi 2", "Kat 60/8", "KCC 423"] },
+          { "name": "Groundnuts", "types_or_varieties": ["Red Valencia", "Homa Bay Local", "CG 7", "ICGV-SM 90704"] }
+        ]
+      },
+      {
+        "name": "Roots & Tubers",
+        "items": [
+          { "name": "Irish Potatoes", "types_or_varieties": ["Shangi", "Unica", "Dutch Robijn", "Asante", "Kenya Karibu", "Tigoni"] },
+          { "name": "Sweet Potatoes", "types_or_varieties": ["Vandana", "Kemb 10", "Orange-Fleshed (OFSP - Vita / Kabode)", "Mugande"] },
+          { "name": "Cassava", "types_or_varieties": ["Kibandameno", "Tajirika", "Shibe", "Nzalauka", "Muizazanya"] },
+          { "name": "Arrowroots (Nduma)", "types_or_varieties": ["Dasheen (Eddoe type)", "Taro (Large corm type)"] }
+        ]
+      },
+      {
+        "name": "Industrial Cash Crops",
+        "items": [
+          { "name": "Tea", "types_or_varieties": ["TRFK 6/8", "TRFK 31/8", "BBK 35", "EPK TN14-3", "Purple Tea (TRFK 306/1)"] },
+          { "name": "Coffee", "types_or_varieties": ["SL 28", "SL 34", "Ruiru 11", "Batian", "K7"] },
+          { "name": "Sugarcane", "types_or_varieties": ["CO 421", "CO 945", "KEN 82-493", "KEN 83-737", "N14"] },
+          { "name": "Sisal", "types_or_varieties": ["Agave sisalana", "Hybrid 11648"] },
+          { "name": "Cotton", "types_or_varieties": ["Hart 89M", "KSA 81M", "Bt Cotton (HA 178-2 / Bollgard II)"] },
+          { "name": "Pyrethrum", "types_or_varieties": ["P4", "K214", "K235", "C47"] },
+          { "name": "Miraa (Khat)", "types_or_varieties": ["Alele", "Kathata", "Giza", "Kangeta"] }
+        ]
+      },
+      {
+        "name": "Horticulture & Export Floriculture",
+        "items": [
+          { "name": "Cut Roses", "types_or_varieties": ["Valentino", "Red Calypso", "Furiosa", "Freedom", "Athena"] },
+          { "name": "Summer Flowers", "types_or_varieties": ["Carnations", "Alstroemeria", "Gypsophila (Baby's Breath)", "Lilies", "Eryngium"] },
+          { "name": "French Beans", "types_or_varieties": ["Amy", "Teresa", "Serengeti", "Belcampo", "Rexas"] },
+          { "name": "Snow Peas & Sugar Snaps", "types_or_varieties": ["Oregon Sugar Pod", "Cascadia", "Sweet Horizon", "Carouby"] }
+        ]
+      },
+      {
+        "name": "Fruits",
+        "items": [
+          { "name": "Pawpaw (Papaya)", "types_or_varieties": ["Solo Variety", "Calina IPB9", "Sunrise Solo", "Red Lady F1", "Mountain Pawpaw"] },
+          { "name": "Avocado", "types_or_varieties": ["Hass", "Fuerte", "Puebla", "Pinkerton", "Duke"] },
+          { "name": "Banana", "types_or_varieties": ["Grand Nain", "Williams (Tissue Culture)", "Giant Cavendish", "Apple Banana", "Uganda Green (Matooke)"] },
+          { "name": "Mango", "types_or_varieties": ["Apple Mango", "Ngowe", "Kent", "Tommy Atkins", "Van Dyke", "Boribo"] },
+          { "name": "Passion Fruit", "types_or_varieties": ["KPF 4 (Yellow)", "KPF 11 (Yellow)", "Purple Passion (Local)", "Sweet Calabash"] },
+          { "name": "Pineapple", "types_or_varieties": ["Smooth Cayenne", "Queen"] }
+        ]
+      },
+      {
+        "name": "Oil Crops & High-Value Nuts",
+        "items": [
+          { "name": "Macadamia Nuts", "types_or_varieties": ["Muruku", "Keni", "EMU-1", "KMB-3", "MRU-2"] },
+          { "name": "Cashew Nuts", "types_or_varieties": ["Mkorosho Local", "Amani Clones"] },
+          { "name": "Sunflower", "types_or_varieties": ["Kenya Fedha", "H8998", "Sunbeam"] },
+          { "name": "Sesame (Simsim)", "types_or_varieties": ["Seka 1", "Seka 2", "Local Coast"] },
+          { "name": "Canola (Rapeseed)", "types_or_varieties": ["L006", "Signet", "Hyola"] }
+        ]
+      },
+      {
+        "name": "Herbs, Spices & Medicinal",
+        "items": [
+          { "name": "Culinary Herbs", "types_or_varieties": ["Sweet Basil (Mrihani)", "Rosemary", "Thyme", "Parsley", "Mint", "Oregano", "Chives"] },
+          { "name": "Ginger & Garlic", "types_or_varieties": ["Local Ginger (Tangawizi)", "Kizungu Garlic", "Moi's Bridge Local"] },
+          { "name": "Aromatic & Medicinal", "types_or_varieties": ["Aloe Vera", "Chamomile", "Lemongrass", "Moringa", "Lavender"] }
+        ]
+      },
+      {
+        "name": "Vegetables",
+        "items": [
+          { "name": "Spinach", "types_or_varieties": ["Fordhook Giant", "King of Denmark", "Bloomsdale Long Standing", "New Zealand Spinach"] },
+          { "name": "Carrots", "types_or_varieties": ["Nantes", "Chantenay Red Core", "Super Kuroda F1", "Imperial Chancellor"] },
+          { "name": "Sukuma Wiki (Collard Greens)", "types_or_varieties": ["Thousand Headed", "Marrow Stem", "Collard Southern Georgia"] },
+          { "name": "Cabbage", "types_or_varieties": ["Gloria F1", "Pruda F1", "Golden Acre", "Copenhagen Market"] },
+          { "name": "Tomatoes", "types_or_varieties": ["Anna F1", "Prostar F1", "Rio Grande", "Cal J", "Rambo F1", "Money Maker"] },
+          { "name": "Onions", "types_or_varieties": ["Red Pinnoy F1", "Red Couch F1", "Texas Early Grano", "Bombay Red"] },
+          { "name": "Peppers & Capsicum", "types_or_varieties": ["California Wonder (Green Hoho)", "Yolo Wonder", "Pasarella F1 (Red)", "Admiral F1 (Yellow)", "Demon F1 (Hot Chili)", "Bullet Chili"] }
+        ]
+      },
+      {
+        "name": "Indigenous Vegetables",
+        "items": [
+          { "name": "African Nightshade (Managu)", "types_or_varieties": ["Giant Nightshade (Solanum scabrum)", "Black Nightshade (Solanum nigrum)"] },
+          { "name": "Amaranth (Terere)", "types_or_varieties": ["Amaranthus cruentus", "Amaranthus hypochondriacus (Grain Amaranth)"] },
+          { "name": "Spider Plant (Saget)", "types_or_varieties": ["Cleome gynandra (Green stemmed)", "Cleome gynandra (Purple stemmed)"] },
+          { "name": "Cowpea Leaves (Kunde)", "types_or_varieties": ["Vigna unguiculata (K80 leaf variety)", "Machakos 66 Leaf"] }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Fodder, Forage & Pasture",
+    "subcategories": [
+      {
+        "name": "Livestock Feeds & Grasses",
+        "items": [
+          { "name": "Napier Grass", "types_or_varieties": ["Kakamega 1", "French Cameroon", "Ouma Grass", "Super Napier (Pakchong 1)"] },
+          { "name": "Rhodes Grass (Hay)", "types_or_varieties": ["Boma Rhodes", "Callide Rhodes"] },
+          { "name": "Brachiaria (Wonder Grass)", "types_or_varieties": ["Mulato II", "Basilisk", "Xaraes", "Piata"] },
+          { "name": "Legume Fodder", "types_or_varieties": ["Lucerne (Alfalfa)", "Green Desmodium", "Silverleaf Desmodium", "Calliandra"] }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Forestry & Timber",
+    "subcategories": [
+      {
+        "name": "Commercial & Agroforestry Trees",
+        "items": [
+          { "name": "Eucalyptus (Blue Gum)", "types_or_varieties": ["Eucalyptus grandis", "Eucalyptus camaldulensis", "Eucalyptus saligna", "GC Clones (Hybrid)"] },
+          { "name": "Grevillea (Silky Oak)", "types_or_varieties": ["Grevillea robusta (Mukurwe)"] },
+          { "name": "Cedar / Cypress", "types_or_varieties": ["African Pencil Cedar (Juniperus procera)", "Cupressus lusitanica (Cypress)"] },
+          { "name": "Pine & Other Timbers", "types_or_varieties": ["Pinus patula", "Pinus radiata", "Casuarina equisetifolia (Whistling Pine)", "Mvule (Milicia excelsa)"] }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Livestock",
+    "subcategories": [
+      {
+        "name": "Cattle",
+        "items": [
+          { "name": "Dairy Cattle", "types_or_varieties": ["Holstein Friesian", "Ayrshire", "Guernsey", "Jersey"] },
+          { "name": "Beef Cattle", "types_or_varieties": ["Kenyan Boran", "Orma Boran", "Somali Boran", "Charolais", "Hereford", "Aberdeen Angus"] },
+          { "name": "Dual Purpose Cattle", "types_or_varieties": ["Sahiwal", "Simmental", "Flecvieh", "Brown Swiss"] },
+          { "name": "Indigenous Zebu", "types_or_varieties": ["Maasai Zebu", "Nandi Zebu", "Turkana Zebu", "Coastal Zebu"] }
+        ]
+      },
+      {
+        "name": "Small Ruminants",
+        "items": [
+          { "name": "Dairy Goats", "types_or_varieties": ["Toggenburg", "British Alpine", "Saanen", "Kenya Alpine"] },
+          { "name": "Meat Goats", "types_or_varieties": ["Galla (Borana Goat)", "Small East African Goat", "Boer"] },
+          { "name": "Meat Sheep", "types_or_varieties": ["Dorper", "Red Maasai", "Blackhead Persian"] },
+          { "name": "Wool Sheep", "types_or_varieties": ["Merino", "Corriedale", "Hampshire Down"] }
+        ]
+      },
+      {
+        "name": "Poultry",
+        "items": [
+          { "name": "Commercial Chicken", "types_or_varieties": ["Cobb 500 (Broiler)", "Ross 308 (Broiler)", "Hy-Line (Layer)", "Isa Brown (Layer)", "Shaver Black"] },
+          { "name": "Improved Kienyeji Chicken", "types_or_varieties": ["KALRO Improved Kienyeji", "Kuroiler", "Rainbow Rooster", "Kenbro"] },
+          { "name": "Indigenous Chicken", "types_or_varieties": ["Traditional Kienyeji (Sitatunga, Naked Neck, Frizzle)"] },
+          { "name": "Alternative Poultry", "types_or_varieties": ["Broad Breasted Bronze Turkey", "Pekin Duck", "Muscovy Duck", "Coturnix Quail", "Guinea Fowl"] }
+        ]
+      },
+      {
+        "name": "Pigs & Rabbits",
+        "items": [
+          { "name": "Pigs", "types_or_varieties": ["Large White", "Landrace", "Duroc", "Hampshire", "Berkshire"] },
+          { "name": "Rabbits", "types_or_varieties": ["New Zealand White", "California White", "Flemish Giant", "Chinchilla", "Kenya Bloat-Resistant Crosses"] }
+        ]
+      },
+      {
+        "name": "Apiculture, Aquaculture & Micro-Livestock",
+        "items": [
+          { "name": "Honey Bees", "types_or_varieties": ["Apis mellifera scutellata", "Apis mellifera litorea", "Apis mellifera monticola"] },
+          { "name": "Fish / Aquaculture", "types_or_varieties": ["Nile Tilapia (Oreochromis niloticus)", "African Catfish (Clarias gariepinus)", "Rainbow Trout"] },
+          { "name": "Insect Farming", "types_or_varieties": ["Black Soldier Fly (BSF)", "House Cricket", "Silkworms"] }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Pests & Diseases Matrix",
+    "subcategories": [
+      {
+        "name": "Crop Pests & Vectors",
+        "items": [
+          { "name": "Fall Armyworm", "targets": ["Maize", "Sorghum", "Wheat"], "signs": ["Ragged leaf holes", "Sawdust frass"] },
+          { "name": "Maize Lethal Necrosis (MLND)", "targets": ["Maize"], "signs": ["Severe leaf yellowing", "Dead heart necrosis"] },
+          { "name": "Late Blight", "targets": ["Irish Potatoes", "Tomatoes"], "signs": ["Water-soaked dark spots", "White leaf mold"] },
+          { "name": "Tuta Absoluta", "targets": ["Tomatoes", "Peppers"], "signs": ["Blotchy leaf mines", "Bored fruit holes"] }
+        ]
+      },
+      {
+        "name": "Animal Pathology",
+        "items": [
+          { "name": "Mastitis", "targets": ["Dairy Cattle", "Dairy Goats"], "signs": ["Swollen/hard udders", "Clotted milk yield"] },
+          { "name": "Newcastle Disease", "targets": ["Commercial Chicken", "Kienyeji Chicken"], "signs": ["Greenish diarrhea", "Twisted nervous necks"] },
+          { "name": "East Coast Fever (ECF)", "targets": ["Dairy Cattle", "Beef Cattle"], "signs": ["Swollen lymph nodes", "Froth from nostrils"] }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Agricultural Inputs",
+    "subcategories": [
+      {
+        "name": "Fertilizers & Minerals",
+        "items": [
+          { "name": "Planting Fertilizers", "types_or_varieties": ["DAP (Diammonium Phosphate)", "NPK (17:17:17)", "NPK (23:23:0)"] },
+          { "name": "Top Dressing", "types_or_varieties": ["CAN (Calcium Ammonium Nitrate)", "Urea"] },
+          { "name": "Foliar Feeds", "types_or_varieties": ["Easy Gro", "Multi-K", "Aspergro"] }
+        ]
+      },
+      {
+        "name": "Commercial Feeds",
+        "items": [
+          { "name": "Dairy Supplements", "types_or_varieties": ["Standard Dairy Meal", "High Yield Dairy Meal", "Calf Pellets"] },
+          { "name": "Poultry Formulations", "types_or_varieties": ["Chick Mash", "Growers Mash", "Layers Mash", "Broiler Starter", "Broiler Finisher"] }
+        ]
+      }
+    ]
+  }
+]
