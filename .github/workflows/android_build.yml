@@ -36,11 +36,9 @@ jobs:
 
     - name: Patch isar_flutter_libs
       run: |
-        ISAR_PATH=$(flutter pub cache list | grep -oP 'isar_flutter_libs: \K.*')
-        if [ -f "$HOME/.pub-cache/hosted/pub.dev/isar_flutter_libs-3.1.0+1/android/build.gradle" ]; then
-          sed -i 's/android {/android {\n    namespace "dev.isar.isar_flutter_libs"/' $HOME/.pub-cache/hosted/pub.dev/isar_flutter_libs-3.1.0+1/android/build.gradle
-          sed -i 's/compileSdkVersion 30/compileSdkVersion 34/' $HOME/.pub-cache/hosted/pub.dev/isar_flutter_libs-3.1.0+1/android/build.gradle
-        fi
+        # Use find to locate the build.gradle file dynamically in the pub cache
+        find $PUB_CACHE -path "*isar_flutter_libs*/android/build.gradle" -exec sed -i 's/android {/android {\n    namespace "dev.isar.isar_flutter_libs"/' {} +
+        find $PUB_CACHE -path "*isar_flutter_libs*/android/build.gradle" -exec sed -i 's/compileSdkVersion [0-9]*/compileSdkVersion 34/' {} +
 
     - name: Run Build Runner
       run: dart run build_runner build --delete-conflicting-outputs
