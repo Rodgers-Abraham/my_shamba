@@ -8,6 +8,7 @@ import 'presentation/bloc/harvest_bloc.dart';
 import 'presentation/bloc/asset_bloc.dart';
 import 'presentation/bloc/ledger_bloc.dart';
 import 'presentation/bloc/supply_bloc.dart';
+import 'presentation/bloc/calendar_bloc.dart';
 import 'presentation/screens/onboarding_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'core/theme/app_theme.dart';
@@ -36,6 +37,7 @@ class MyShambaApp extends StatelessWidget {
         BlocProvider(create: (_) => di.sl<AssetBloc>()),
         BlocProvider(create: (_) => di.sl<LedgerBloc>()),
         BlocProvider(create: (_) => di.sl<SupplyBloc>()),
+        BlocProvider(create: (_) => di.sl<CalendarBloc>()),
       ],
       child: MaterialApp(
         title: 'my_shamba',

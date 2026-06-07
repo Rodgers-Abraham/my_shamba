@@ -27,6 +27,11 @@ import 'presentation/bloc/asset_bloc.dart';
 import 'presentation/bloc/ledger_bloc.dart';
 import 'presentation/bloc/supply_bloc.dart';
 
+import 'data/local/models/calendar_models.dart';
+import 'data/repositories/calendar_repository_impl.dart';
+import 'domain/repositories/calendar_repository.dart';
+import 'presentation/bloc/calendar_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -40,6 +45,7 @@ Future<void> init() async {
       HarvestLogIsarSchema,
       LedgerEntryIsarSchema,
       SupplyItemIsarSchema,
+      CalendarEntryIsarSchema,
     ],
     directory: dir.path,
   );
@@ -52,6 +58,7 @@ Future<void> init() async {
   sl.registerFactory(() => AssetBloc(repository: sl()));
   sl.registerFactory(() => LedgerBloc(repository: sl()));
   sl.registerFactory(() => SupplyBloc(repository: sl()));
+  sl.registerFactory(() => CalendarBloc(repository: sl()));
 
   // Repositories
   sl.registerLazySingleton<AuthRepository>(
@@ -74,6 +81,9 @@ Future<void> init() async {
   );
   sl.registerLazySingleton<WeatherRepository>(
     () => WeatherRepositoryImpl(client: sl()),
+  );
+  sl.registerLazySingleton<CalendarRepository>(
+    () => CalendarRepositoryImpl(sl(), sl()),
   );
 
   // External

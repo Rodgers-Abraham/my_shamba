@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  // Define strict Light Mode colors
-  static const Color primary = Color(0xFFFF5722); // Streak Flame/Primary
-  static const Color success = Color(0xFF2E7D32); // Success Green
-  static const Color warning = Color(0xFFFFF8E1); // Warning Amber (Light)
-  static const Color warningDark = Color(0xFFF57F17); // Warning Amber (Dark)
+  // Define strict Light Mode colors (Farm Green Palette)
+  static const Color primary = Color(0xFF2E7D32); // Deep Farm Green
+  static const Color accent = Color(0xFF81C784); // Lighter Green
+  static const Color success = Color(0xFF1B5E20); // Dark Green
+  static const Color warning = Color(0xFFFFF9C4); // Light Yellow
+  static const Color warningDark = Color(0xFFFBC02D); // Amber/Gold
   
   static const Color background = Color(0xFFF8F9FA); // Light grey background
   static const Color surface = Color(0xFFFFFFFF); // White canvas
@@ -18,7 +19,7 @@ class AppTheme {
       brightness: Brightness.light,
       colorScheme: ColorScheme.light(
         primary: primary,
-        secondary: primary,
+        secondary: accent,
         surface: surface,
         error: Colors.red.shade700,
         onPrimary: Colors.white,

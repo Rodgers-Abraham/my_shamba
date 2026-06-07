@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/utils/inputs_parser.dart';
 import '../../domain/entities/asset_entity.dart';
 import '../bloc/asset_bloc.dart';
+import '../../core/theme/app_theme.dart';
 
 class AddAssetDialog extends StatefulWidget {
   final String farmId;
@@ -22,6 +23,14 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
   String? _selectedItem;
   String? _selectedVariety;
   String? _selectedStatus;
+
+  // Crop milestones
+  bool _isPlanted = false;
+  bool _isWeeded = false;
+  bool _isFumigated = false;
+  bool _isTopDressed = false;
+  bool _isPruned = false;
+  bool _isHarvested = false;
 
   List<dynamic> _parsedData = [];
   bool _isLoading = true;
@@ -80,7 +89,7 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
-              initialValue: _selectedCategory,
+              value: _selectedCategory,
               items: categories
                   .map((c) => DropdownMenuItem(value: c, child: Text(c)))
                   .toList(),
@@ -99,7 +108,7 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
             const SizedBox(height: 16),
             if (subcategories.isNotEmpty)
               DropdownButtonFormField<String>(
-                initialValue: _selectedSubcategory,
+                value: _selectedSubcategory,
                 items: subcategories
                     .map((c) => DropdownMenuItem(value: c, child: Text(c)))
                     .toList(),
@@ -116,7 +125,7 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
             const SizedBox(height: 16),
             if (items.isNotEmpty)
               DropdownButtonFormField<String>(
-                initialValue: _selectedItem,
+                value: _selectedItem,
                 items: items
                     .map((c) => DropdownMenuItem(value: c, child: Text(c)))
                     .toList(),
@@ -132,7 +141,7 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
             const SizedBox(height: 16),
             if (varieties.isNotEmpty)
               DropdownButtonFormField<String>(
-                initialValue: _selectedVariety,
+                value: _selectedVariety,
                 items: varieties
                     .map((c) => DropdownMenuItem(value: c, child: Text(c)))
                     .toList(),
@@ -150,7 +159,7 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
             if (_selectedType == 'Livestock') ...[
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                initialValue: _selectedStatus,
+                value: _selectedStatus,
                 items: const [
                   DropdownMenuItem(value: 'Healthy', child: Text('Healthy')),
                   DropdownMenuItem(value: 'Pregnant', child: Text('Pregnant')),
@@ -164,6 +173,52 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
                 },
                 decoration:
                     const InputDecoration(labelText: 'Status (Optional)'),
+              ),
+            ],
+            if (_selectedType == 'Crops') ...[
+              const SizedBox(height: 16),
+              const Text('Crops Milestones:', style: TextStyle(fontWeight: FontWeight.bold)),
+              CheckboxListTile(
+                title: const Text('Planted'),
+                value: _isPlanted,
+                onChanged: (val) => setState(() => _isPlanted = val!),
+                dense: true,
+                controlAffinity: ListTileControlAffinity.leading,
+              ),
+              CheckboxListTile(
+                title: const Text('Weeded'),
+                value: _isWeeded,
+                onChanged: (val) => setState(() => _isWeeded = val!),
+                dense: true,
+                controlAffinity: ListTileControlAffinity.leading,
+              ),
+              CheckboxListTile(
+                title: const Text('Fumigated'),
+                value: _isFumigated,
+                onChanged: (val) => setState(() => _isFumigated = val!),
+                dense: true,
+                controlAffinity: ListTileControlAffinity.leading,
+              ),
+              CheckboxListTile(
+                title: const Text('Top Dressed'),
+                value: _isTopDressed,
+                onChanged: (val) => setState(() => _isTopDressed = val!),
+                dense: true,
+                controlAffinity: ListTileControlAffinity.leading,
+              ),
+              CheckboxListTile(
+                title: const Text('Pruned'),
+                value: _isPruned,
+                onChanged: (val) => setState(() => _isPruned = val!),
+                dense: true,
+                controlAffinity: ListTileControlAffinity.leading,
+              ),
+              CheckboxListTile(
+                title: const Text('Harvested'),
+                value: _isHarvested,
+                onChanged: (val) => setState(() => _isHarvested = val!),
+                dense: true,
+                controlAffinity: ListTileControlAffinity.leading,
               ),
             ],
             const SizedBox(height: 16),
@@ -201,12 +256,18 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
                 createdAt: DateTime.now(),
                 variety: _selectedVariety ?? 'Unknown',
                 notes: _notesCtrl.text.isNotEmpty ? _notesCtrl.text : null,
+                isPlanted: _isPlanted,
+                isWeeded: _isWeeded,
+                isFumigated: _isFumigated,
+                isTopDressed: _isTopDressed,
+                isPruned: _isPruned,
+                isHarvested: _isHarvested,
               );
             }
 
             context.read<AssetBloc>().add(AddAsset(newAsset));
             ScaffoldMessenger.of(context)
-                .showSnackBar(const SnackBar(content: Text('Asset Added!')));
+                .showSnackBar(const SnackBar(content: Text('Asset Added! Streak Update 🔥'), backgroundColor: AppTheme.primary));
             Navigator.pop(context);
           },
           child: const Text('Save'),

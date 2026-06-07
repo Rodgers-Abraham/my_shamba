@@ -39,6 +39,12 @@ class LivestockEntity extends AssetEntity {
 
 class CropEntity extends AssetEntity {
   final String variety;
+  final bool isPlanted;
+  final bool isWeeded;
+  final bool isFumigated;
+  final bool isTopDressed;
+  final bool isPruned;
+  final bool isHarvested;
 
   const CropEntity({
     required super.id,
@@ -46,10 +52,25 @@ class CropEntity extends AssetEntity {
     required super.name,
     required super.createdAt,
     required this.variety,
+    this.isPlanted = false,
+    this.isWeeded = false,
+    this.isFumigated = false,
+    this.isTopDressed = false,
+    this.isPruned = false,
+    this.isHarvested = false,
     super.notes,
   }) : super(type: 'crop');
 
   @override
-  List<Object?> get props => [...super.props, variety];
+  List<Object?> get props => [
+        ...super.props,
+        variety,
+        isPlanted,
+        isWeeded,
+        isFumigated,
+        isTopDressed,
+        isPruned,
+        isHarvested
+      ];
 }
 

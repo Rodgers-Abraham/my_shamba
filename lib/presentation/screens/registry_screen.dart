@@ -92,7 +92,6 @@ class _RegistryScreenState extends State<RegistryScreen> with SingleTickerProvid
     );
   }
 
-
   Widget _buildListView(List<AssetEntity> assets, {required bool isLivestock}) {
     if (assets.isEmpty) {
       return Center(
@@ -133,9 +132,7 @@ class _RegistryScreenState extends State<RegistryScreen> with SingleTickerProvid
               ],
             ),
             onTap: () {
-              if (isLivestock) {
-                _showDossier(context, asset as LivestockEntity);
-              }
+              _showDossier(context, asset);
             },
           ),
         );
@@ -166,7 +163,7 @@ class _RegistryScreenState extends State<RegistryScreen> with SingleTickerProvid
     );
   }
 
-  void _showDossier(BuildContext context, LivestockEntity asset) {
+  void _showDossier(BuildContext context, AssetEntity asset) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -174,30 +171,51 @@ class _RegistryScreenState extends State<RegistryScreen> with SingleTickerProvid
       builder: (context) {
         return Container(
           padding: const EdgeInsets.all(24),
-          height: MediaQuery.of(context).size.height * 0.7,
+          height: MediaQuery.of(context).size.height * 0.75,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(asset.name, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                  _buildStatusBadge(asset.status),
+                  Expanded(child: Text(asset.name, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
+                  if (asset is LivestockEntity) _buildStatusBadge(asset.status),
                 ],
               ),
               const Divider(height: 32),
-              const Text('Reproductive Progress Timeline', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              const SizedBox(height: 16),
-              _buildTimelineWidget(asset.status.toLowerCase().contains('pregnant') ? 0.6 : 0.0), // Mock progress
-              const SizedBox(height: 32),
+              if (asset is CropEntity) ...[
+                const Text('Milestones Reached', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    _buildMilestoneChip('Planted', asset.isPlanted),
+                    _buildMilestoneChip('Weeded', asset.isWeeded),
+                    _buildMilestoneChip('Fumigated', asset.isFumigated),
+                    _buildMilestoneChip('Top Dressed', asset.isTopDressed),
+                    _buildMilestoneChip('Pruned', asset.isPruned),
+                    _buildMilestoneChip('Harvested', asset.isHarvested),
+                  ],
+                ),
+                const SizedBox(height: 24),
+              ],
+              if (asset is LivestockEntity) ...[
+                const Text('Reproductive Progress Timeline', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                const SizedBox(height: 16),
+                _buildTimelineWidget(asset.status.toLowerCase().contains('pregnant') ? 0.6 : 0.0),
+                const SizedBox(height: 32),
+              ],
+              const Text('Notes', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              const SizedBox(height: 8),
+              Text(asset.notes ?? 'No notes added.', style: const TextStyle(color: AppTheme.textSecondary)),
+              const SizedBox(height: 24),
               const Text('Activity Feed', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               const SizedBox(height: 16),
               Expanded(
                 child: ListView(
                   children: [
-                    _buildActivityItem('Vaccination: FMD', '2 days ago', Icons.vaccines),
-                    _buildActivityItem('Moved to Pasture B', '1 week ago', Icons.place),
-                    _buildActivityItem('Registered in System', '2 weeks ago', Icons.app_registration),
+                    _buildActivityItem('Registered in System', asset.createdAt.toString().substring(0, 10), Icons.app_registration),
                   ],
                 ),
               ),
@@ -205,6 +223,18 @@ class _RegistryScreenState extends State<RegistryScreen> with SingleTickerProvid
           ),
         );
       },
+    );
+  }
+
+  Widget _buildMilestoneChip(String label, bool isDone) {
+    return Chip(
+      label: Text(label),
+      backgroundColor: isDone ? AppTheme.primary.withValues(alpha: 0.1) : Colors.grey.shade100,
+      labelStyle: TextStyle(
+        color: isDone ? AppTheme.primary : AppTheme.textSecondary,
+        fontWeight: isDone ? FontWeight.bold : FontWeight.normal,
+      ),
+      side: BorderSide(color: isDone ? AppTheme.primary : Colors.grey.shade300),
     );
   }
 

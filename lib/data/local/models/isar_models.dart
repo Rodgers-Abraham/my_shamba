@@ -30,6 +30,9 @@ class FarmIsar {
   late String constituency;
   late String ward;
 
+  int streakCount = 0;
+  DateTime? lastActivityDate;
+
   bool isSynced = false;
 }
 
@@ -55,6 +58,12 @@ class AssetIsar {
 
   // Crop specifics
   String? variety;
+  bool isPlanted = false;
+  bool isWeeded = false;
+  bool isFumigated = false;
+  bool isTopDressed = false;
+  bool isPruned = false;
+  bool isHarvested = false;
 
   bool isSynced = false;
 }

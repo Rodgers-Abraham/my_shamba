@@ -17,28 +17,33 @@ const UserIsarSchema = CollectionSchema(
   name: r'UserIsar',
   id: 1907786346797868586,
   properties: {
-    r'email': PropertySchema(
+    r'address': PropertySchema(
       id: 0,
+      name: r'address',
+      type: IsarType.string,
+    ),
+    r'email': PropertySchema(
+      id: 1,
       name: r'email',
       type: IsarType.string,
     ),
     r'fullName': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'fullName',
       type: IsarType.string,
     ),
     r'isSynced': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'isSynced',
       type: IsarType.bool,
     ),
     r'phoneNumber': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'phoneNumber',
       type: IsarType.string,
     ),
     r'syncId': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'syncId',
       type: IsarType.string,
     )
@@ -77,6 +82,12 @@ int _userIsarEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  {
+    final value = object.address;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.email.length * 3;
   bytesCount += 3 + object.fullName.length * 3;
   bytesCount += 3 + object.phoneNumber.length * 3;
@@ -90,11 +101,12 @@ void _userIsarSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.email);
-  writer.writeString(offsets[1], object.fullName);
-  writer.writeBool(offsets[2], object.isSynced);
-  writer.writeString(offsets[3], object.phoneNumber);
-  writer.writeString(offsets[4], object.syncId);
+  writer.writeString(offsets[0], object.address);
+  writer.writeString(offsets[1], object.email);
+  writer.writeString(offsets[2], object.fullName);
+  writer.writeBool(offsets[3], object.isSynced);
+  writer.writeString(offsets[4], object.phoneNumber);
+  writer.writeString(offsets[5], object.syncId);
 }
 
 UserIsar _userIsarDeserialize(
@@ -104,12 +116,13 @@ UserIsar _userIsarDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = UserIsar();
-  object.email = reader.readString(offsets[0]);
-  object.fullName = reader.readString(offsets[1]);
+  object.address = reader.readStringOrNull(offsets[0]);
+  object.email = reader.readString(offsets[1]);
+  object.fullName = reader.readString(offsets[2]);
   object.id = id;
-  object.isSynced = reader.readBool(offsets[2]);
-  object.phoneNumber = reader.readString(offsets[3]);
-  object.syncId = reader.readString(offsets[4]);
+  object.isSynced = reader.readBool(offsets[3]);
+  object.phoneNumber = reader.readString(offsets[4]);
+  object.syncId = reader.readString(offsets[5]);
   return object;
 }
 
@@ -121,14 +134,16 @@ P _userIsarDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
-      return (reader.readBool(offset)) as P;
-    case 3:
       return (reader.readString(offset)) as P;
+    case 3:
+      return (reader.readBool(offset)) as P;
     case 4:
+      return (reader.readString(offset)) as P;
+    case 5:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -323,6 +338,152 @@ extension UserIsarQueryWhere on QueryBuilder<UserIsar, UserIsar, QWhereClause> {
 
 extension UserIsarQueryFilter
     on QueryBuilder<UserIsar, UserIsar, QFilterCondition> {
+  QueryBuilder<UserIsar, UserIsar, QAfterFilterCondition> addressIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'address',
+      ));
+    });
+  }
+
+  QueryBuilder<UserIsar, UserIsar, QAfterFilterCondition> addressIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'address',
+      ));
+    });
+  }
+
+  QueryBuilder<UserIsar, UserIsar, QAfterFilterCondition> addressEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserIsar, UserIsar, QAfterFilterCondition> addressGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserIsar, UserIsar, QAfterFilterCondition> addressLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserIsar, UserIsar, QAfterFilterCondition> addressBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'address',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserIsar, UserIsar, QAfterFilterCondition> addressStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserIsar, UserIsar, QAfterFilterCondition> addressEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserIsar, UserIsar, QAfterFilterCondition> addressContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserIsar, UserIsar, QAfterFilterCondition> addressMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'address',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserIsar, UserIsar, QAfterFilterCondition> addressIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'address',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<UserIsar, UserIsar, QAfterFilterCondition> addressIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'address',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<UserIsar, UserIsar, QAfterFilterCondition> emailEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -915,6 +1076,18 @@ extension UserIsarQueryLinks
     on QueryBuilder<UserIsar, UserIsar, QFilterCondition> {}
 
 extension UserIsarQuerySortBy on QueryBuilder<UserIsar, UserIsar, QSortBy> {
+  QueryBuilder<UserIsar, UserIsar, QAfterSortBy> sortByAddress() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'address', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserIsar, UserIsar, QAfterSortBy> sortByAddressDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'address', Sort.desc);
+    });
+  }
+
   QueryBuilder<UserIsar, UserIsar, QAfterSortBy> sortByEmail() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'email', Sort.asc);
@@ -978,6 +1151,18 @@ extension UserIsarQuerySortBy on QueryBuilder<UserIsar, UserIsar, QSortBy> {
 
 extension UserIsarQuerySortThenBy
     on QueryBuilder<UserIsar, UserIsar, QSortThenBy> {
+  QueryBuilder<UserIsar, UserIsar, QAfterSortBy> thenByAddress() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'address', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserIsar, UserIsar, QAfterSortBy> thenByAddressDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'address', Sort.desc);
+    });
+  }
+
   QueryBuilder<UserIsar, UserIsar, QAfterSortBy> thenByEmail() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'email', Sort.asc);
@@ -1053,6 +1238,13 @@ extension UserIsarQuerySortThenBy
 
 extension UserIsarQueryWhereDistinct
     on QueryBuilder<UserIsar, UserIsar, QDistinct> {
+  QueryBuilder<UserIsar, UserIsar, QDistinct> distinctByAddress(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'address', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<UserIsar, UserIsar, QDistinct> distinctByEmail(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1093,6 +1285,12 @@ extension UserIsarQueryProperty
   QueryBuilder<UserIsar, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<UserIsar, String?, QQueryOperations> addressProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'address');
     });
   }
 
@@ -1153,23 +1351,33 @@ const FarmIsarSchema = CollectionSchema(
       name: r'isSynced',
       type: IsarType.bool,
     ),
-    r'ownerId': PropertySchema(
+    r'lastActivityDate': PropertySchema(
       id: 3,
+      name: r'lastActivityDate',
+      type: IsarType.dateTime,
+    ),
+    r'ownerId': PropertySchema(
+      id: 4,
       name: r'ownerId',
       type: IsarType.string,
     ),
+    r'streakCount': PropertySchema(
+      id: 5,
+      name: r'streakCount',
+      type: IsarType.long,
+    ),
     r'subCounty': PropertySchema(
-      id: 4,
+      id: 6,
       name: r'subCounty',
       type: IsarType.string,
     ),
     r'syncId': PropertySchema(
-      id: 5,
+      id: 7,
       name: r'syncId',
       type: IsarType.string,
     ),
     r'ward': PropertySchema(
-      id: 6,
+      id: 8,
       name: r'ward',
       type: IsarType.string,
     )
@@ -1226,10 +1434,12 @@ void _farmIsarSerialize(
   writer.writeString(offsets[0], object.constituency);
   writer.writeString(offsets[1], object.county);
   writer.writeBool(offsets[2], object.isSynced);
-  writer.writeString(offsets[3], object.ownerId);
-  writer.writeString(offsets[4], object.subCounty);
-  writer.writeString(offsets[5], object.syncId);
-  writer.writeString(offsets[6], object.ward);
+  writer.writeDateTime(offsets[3], object.lastActivityDate);
+  writer.writeString(offsets[4], object.ownerId);
+  writer.writeLong(offsets[5], object.streakCount);
+  writer.writeString(offsets[6], object.subCounty);
+  writer.writeString(offsets[7], object.syncId);
+  writer.writeString(offsets[8], object.ward);
 }
 
 FarmIsar _farmIsarDeserialize(
@@ -1243,10 +1453,12 @@ FarmIsar _farmIsarDeserialize(
   object.county = reader.readString(offsets[1]);
   object.id = id;
   object.isSynced = reader.readBool(offsets[2]);
-  object.ownerId = reader.readString(offsets[3]);
-  object.subCounty = reader.readString(offsets[4]);
-  object.syncId = reader.readString(offsets[5]);
-  object.ward = reader.readString(offsets[6]);
+  object.lastActivityDate = reader.readDateTimeOrNull(offsets[3]);
+  object.ownerId = reader.readString(offsets[4]);
+  object.streakCount = reader.readLong(offsets[5]);
+  object.subCounty = reader.readString(offsets[6]);
+  object.syncId = reader.readString(offsets[7]);
+  object.ward = reader.readString(offsets[8]);
   return object;
 }
 
@@ -1264,12 +1476,16 @@ P _farmIsarDeserializeProp<P>(
     case 2:
       return (reader.readBool(offset)) as P;
     case 3:
-      return (reader.readString(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 4:
       return (reader.readString(offset)) as P;
     case 5:
-      return (reader.readString(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 6:
+      return (reader.readString(offset)) as P;
+    case 7:
+      return (reader.readString(offset)) as P;
+    case 8:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1790,6 +2006,80 @@ extension FarmIsarQueryFilter
     });
   }
 
+  QueryBuilder<FarmIsar, FarmIsar, QAfterFilterCondition>
+      lastActivityDateIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'lastActivityDate',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmIsar, FarmIsar, QAfterFilterCondition>
+      lastActivityDateIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'lastActivityDate',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmIsar, FarmIsar, QAfterFilterCondition>
+      lastActivityDateEqualTo(DateTime? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'lastActivityDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmIsar, FarmIsar, QAfterFilterCondition>
+      lastActivityDateGreaterThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'lastActivityDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmIsar, FarmIsar, QAfterFilterCondition>
+      lastActivityDateLessThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'lastActivityDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmIsar, FarmIsar, QAfterFilterCondition>
+      lastActivityDateBetween(
+    DateTime? lower,
+    DateTime? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'lastActivityDate',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<FarmIsar, FarmIsar, QAfterFilterCondition> ownerIdEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -1916,6 +2206,60 @@ extension FarmIsarQueryFilter
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'ownerId',
         value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmIsar, FarmIsar, QAfterFilterCondition> streakCountEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'streakCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmIsar, FarmIsar, QAfterFilterCondition>
+      streakCountGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'streakCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmIsar, FarmIsar, QAfterFilterCondition> streakCountLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'streakCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmIsar, FarmIsar, QAfterFilterCondition> streakCountBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'streakCount',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
       ));
     });
   }
@@ -2355,6 +2699,18 @@ extension FarmIsarQuerySortBy on QueryBuilder<FarmIsar, FarmIsar, QSortBy> {
     });
   }
 
+  QueryBuilder<FarmIsar, FarmIsar, QAfterSortBy> sortByLastActivityDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastActivityDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FarmIsar, FarmIsar, QAfterSortBy> sortByLastActivityDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastActivityDate', Sort.desc);
+    });
+  }
+
   QueryBuilder<FarmIsar, FarmIsar, QAfterSortBy> sortByOwnerId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'ownerId', Sort.asc);
@@ -2364,6 +2720,18 @@ extension FarmIsarQuerySortBy on QueryBuilder<FarmIsar, FarmIsar, QSortBy> {
   QueryBuilder<FarmIsar, FarmIsar, QAfterSortBy> sortByOwnerIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'ownerId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FarmIsar, FarmIsar, QAfterSortBy> sortByStreakCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'streakCount', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FarmIsar, FarmIsar, QAfterSortBy> sortByStreakCountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'streakCount', Sort.desc);
     });
   }
 
@@ -2454,6 +2822,18 @@ extension FarmIsarQuerySortThenBy
     });
   }
 
+  QueryBuilder<FarmIsar, FarmIsar, QAfterSortBy> thenByLastActivityDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastActivityDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FarmIsar, FarmIsar, QAfterSortBy> thenByLastActivityDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastActivityDate', Sort.desc);
+    });
+  }
+
   QueryBuilder<FarmIsar, FarmIsar, QAfterSortBy> thenByOwnerId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'ownerId', Sort.asc);
@@ -2463,6 +2843,18 @@ extension FarmIsarQuerySortThenBy
   QueryBuilder<FarmIsar, FarmIsar, QAfterSortBy> thenByOwnerIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'ownerId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FarmIsar, FarmIsar, QAfterSortBy> thenByStreakCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'streakCount', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FarmIsar, FarmIsar, QAfterSortBy> thenByStreakCountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'streakCount', Sort.desc);
     });
   }
 
@@ -2525,10 +2917,22 @@ extension FarmIsarQueryWhereDistinct
     });
   }
 
+  QueryBuilder<FarmIsar, FarmIsar, QDistinct> distinctByLastActivityDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'lastActivityDate');
+    });
+  }
+
   QueryBuilder<FarmIsar, FarmIsar, QDistinct> distinctByOwnerId(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'ownerId', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<FarmIsar, FarmIsar, QDistinct> distinctByStreakCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'streakCount');
     });
   }
 
@@ -2580,9 +2984,22 @@ extension FarmIsarQueryProperty
     });
   }
 
+  QueryBuilder<FarmIsar, DateTime?, QQueryOperations>
+      lastActivityDateProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'lastActivityDate');
+    });
+  }
+
   QueryBuilder<FarmIsar, String, QQueryOperations> ownerIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'ownerId');
+    });
+  }
+
+  QueryBuilder<FarmIsar, int, QQueryOperations> streakCountProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'streakCount');
     });
   }
 
@@ -2626,38 +3043,68 @@ const AssetIsarSchema = CollectionSchema(
       name: r'farmId',
       type: IsarType.string,
     ),
-    r'isSynced': PropertySchema(
+    r'isFumigated': PropertySchema(
       id: 2,
+      name: r'isFumigated',
+      type: IsarType.bool,
+    ),
+    r'isHarvested': PropertySchema(
+      id: 3,
+      name: r'isHarvested',
+      type: IsarType.bool,
+    ),
+    r'isPlanted': PropertySchema(
+      id: 4,
+      name: r'isPlanted',
+      type: IsarType.bool,
+    ),
+    r'isPruned': PropertySchema(
+      id: 5,
+      name: r'isPruned',
+      type: IsarType.bool,
+    ),
+    r'isSynced': PropertySchema(
+      id: 6,
       name: r'isSynced',
       type: IsarType.bool,
     ),
+    r'isTopDressed': PropertySchema(
+      id: 7,
+      name: r'isTopDressed',
+      type: IsarType.bool,
+    ),
+    r'isWeeded': PropertySchema(
+      id: 8,
+      name: r'isWeeded',
+      type: IsarType.bool,
+    ),
     r'name': PropertySchema(
-      id: 3,
+      id: 9,
       name: r'name',
       type: IsarType.string,
     ),
     r'notes': PropertySchema(
-      id: 4,
+      id: 10,
       name: r'notes',
       type: IsarType.string,
     ),
     r'status': PropertySchema(
-      id: 5,
+      id: 11,
       name: r'status',
       type: IsarType.string,
     ),
     r'syncId': PropertySchema(
-      id: 6,
+      id: 12,
       name: r'syncId',
       type: IsarType.string,
     ),
     r'type': PropertySchema(
-      id: 7,
+      id: 13,
       name: r'type',
       type: IsarType.string,
     ),
     r'variety': PropertySchema(
-      id: 8,
+      id: 14,
       name: r'variety',
       type: IsarType.string,
     )
@@ -2742,13 +3189,19 @@ void _assetIsarSerialize(
 ) {
   writer.writeDateTime(offsets[0], object.createdAt);
   writer.writeString(offsets[1], object.farmId);
-  writer.writeBool(offsets[2], object.isSynced);
-  writer.writeString(offsets[3], object.name);
-  writer.writeString(offsets[4], object.notes);
-  writer.writeString(offsets[5], object.status);
-  writer.writeString(offsets[6], object.syncId);
-  writer.writeString(offsets[7], object.type);
-  writer.writeString(offsets[8], object.variety);
+  writer.writeBool(offsets[2], object.isFumigated);
+  writer.writeBool(offsets[3], object.isHarvested);
+  writer.writeBool(offsets[4], object.isPlanted);
+  writer.writeBool(offsets[5], object.isPruned);
+  writer.writeBool(offsets[6], object.isSynced);
+  writer.writeBool(offsets[7], object.isTopDressed);
+  writer.writeBool(offsets[8], object.isWeeded);
+  writer.writeString(offsets[9], object.name);
+  writer.writeString(offsets[10], object.notes);
+  writer.writeString(offsets[11], object.status);
+  writer.writeString(offsets[12], object.syncId);
+  writer.writeString(offsets[13], object.type);
+  writer.writeString(offsets[14], object.variety);
 }
 
 AssetIsar _assetIsarDeserialize(
@@ -2761,13 +3214,19 @@ AssetIsar _assetIsarDeserialize(
   object.createdAt = reader.readDateTime(offsets[0]);
   object.farmId = reader.readString(offsets[1]);
   object.id = id;
-  object.isSynced = reader.readBool(offsets[2]);
-  object.name = reader.readString(offsets[3]);
-  object.notes = reader.readStringOrNull(offsets[4]);
-  object.status = reader.readStringOrNull(offsets[5]);
-  object.syncId = reader.readString(offsets[6]);
-  object.type = reader.readString(offsets[7]);
-  object.variety = reader.readStringOrNull(offsets[8]);
+  object.isFumigated = reader.readBool(offsets[2]);
+  object.isHarvested = reader.readBool(offsets[3]);
+  object.isPlanted = reader.readBool(offsets[4]);
+  object.isPruned = reader.readBool(offsets[5]);
+  object.isSynced = reader.readBool(offsets[6]);
+  object.isTopDressed = reader.readBool(offsets[7]);
+  object.isWeeded = reader.readBool(offsets[8]);
+  object.name = reader.readString(offsets[9]);
+  object.notes = reader.readStringOrNull(offsets[10]);
+  object.status = reader.readStringOrNull(offsets[11]);
+  object.syncId = reader.readString(offsets[12]);
+  object.type = reader.readString(offsets[13]);
+  object.variety = reader.readStringOrNull(offsets[14]);
   return object;
 }
 
@@ -2785,16 +3244,28 @@ P _assetIsarDeserializeProp<P>(
     case 2:
       return (reader.readBool(offset)) as P;
     case 3:
-      return (reader.readString(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 4:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 5:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 6:
-      return (reader.readString(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 7:
-      return (reader.readString(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 8:
+      return (reader.readBool(offset)) as P;
+    case 9:
+      return (reader.readString(offset)) as P;
+    case 10:
+      return (reader.readStringOrNull(offset)) as P;
+    case 11:
+      return (reader.readStringOrNull(offset)) as P;
+    case 12:
+      return (reader.readString(offset)) as P;
+    case 13:
+      return (reader.readString(offset)) as P;
+    case 14:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -3274,11 +3745,71 @@ extension AssetIsarQueryFilter
     });
   }
 
+  QueryBuilder<AssetIsar, AssetIsar, QAfterFilterCondition> isFumigatedEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isFumigated',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterFilterCondition> isHarvestedEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isHarvested',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterFilterCondition> isPlantedEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isPlanted',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterFilterCondition> isPrunedEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isPruned',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<AssetIsar, AssetIsar, QAfterFilterCondition> isSyncedEqualTo(
       bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'isSynced',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterFilterCondition> isTopDressedEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isTopDressed',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterFilterCondition> isWeededEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isWeeded',
         value: value,
       ));
     });
@@ -4145,6 +4676,54 @@ extension AssetIsarQuerySortBy on QueryBuilder<AssetIsar, AssetIsar, QSortBy> {
     });
   }
 
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> sortByIsFumigated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isFumigated', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> sortByIsFumigatedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isFumigated', Sort.desc);
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> sortByIsHarvested() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isHarvested', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> sortByIsHarvestedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isHarvested', Sort.desc);
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> sortByIsPlanted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isPlanted', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> sortByIsPlantedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isPlanted', Sort.desc);
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> sortByIsPruned() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isPruned', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> sortByIsPrunedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isPruned', Sort.desc);
+    });
+  }
+
   QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> sortByIsSynced() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isSynced', Sort.asc);
@@ -4154,6 +4733,30 @@ extension AssetIsarQuerySortBy on QueryBuilder<AssetIsar, AssetIsar, QSortBy> {
   QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> sortByIsSyncedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isSynced', Sort.desc);
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> sortByIsTopDressed() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isTopDressed', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> sortByIsTopDressedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isTopDressed', Sort.desc);
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> sortByIsWeeded() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isWeeded', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> sortByIsWeededDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isWeeded', Sort.desc);
     });
   }
 
@@ -4268,6 +4871,54 @@ extension AssetIsarQuerySortThenBy
     });
   }
 
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> thenByIsFumigated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isFumigated', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> thenByIsFumigatedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isFumigated', Sort.desc);
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> thenByIsHarvested() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isHarvested', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> thenByIsHarvestedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isHarvested', Sort.desc);
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> thenByIsPlanted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isPlanted', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> thenByIsPlantedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isPlanted', Sort.desc);
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> thenByIsPruned() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isPruned', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> thenByIsPrunedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isPruned', Sort.desc);
+    });
+  }
+
   QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> thenByIsSynced() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isSynced', Sort.asc);
@@ -4277,6 +4928,30 @@ extension AssetIsarQuerySortThenBy
   QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> thenByIsSyncedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isSynced', Sort.desc);
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> thenByIsTopDressed() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isTopDressed', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> thenByIsTopDressedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isTopDressed', Sort.desc);
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> thenByIsWeeded() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isWeeded', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QAfterSortBy> thenByIsWeededDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isWeeded', Sort.desc);
     });
   }
 
@@ -4368,9 +5043,45 @@ extension AssetIsarQueryWhereDistinct
     });
   }
 
+  QueryBuilder<AssetIsar, AssetIsar, QDistinct> distinctByIsFumigated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isFumigated');
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QDistinct> distinctByIsHarvested() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isHarvested');
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QDistinct> distinctByIsPlanted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isPlanted');
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QDistinct> distinctByIsPruned() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isPruned');
+    });
+  }
+
   QueryBuilder<AssetIsar, AssetIsar, QDistinct> distinctByIsSynced() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isSynced');
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QDistinct> distinctByIsTopDressed() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isTopDressed');
+    });
+  }
+
+  QueryBuilder<AssetIsar, AssetIsar, QDistinct> distinctByIsWeeded() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isWeeded');
     });
   }
 
@@ -4437,9 +5148,45 @@ extension AssetIsarQueryProperty
     });
   }
 
+  QueryBuilder<AssetIsar, bool, QQueryOperations> isFumigatedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isFumigated');
+    });
+  }
+
+  QueryBuilder<AssetIsar, bool, QQueryOperations> isHarvestedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isHarvested');
+    });
+  }
+
+  QueryBuilder<AssetIsar, bool, QQueryOperations> isPlantedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isPlanted');
+    });
+  }
+
+  QueryBuilder<AssetIsar, bool, QQueryOperations> isPrunedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isPruned');
+    });
+  }
+
   QueryBuilder<AssetIsar, bool, QQueryOperations> isSyncedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isSynced');
+    });
+  }
+
+  QueryBuilder<AssetIsar, bool, QQueryOperations> isTopDressedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isTopDressed');
+    });
+  }
+
+  QueryBuilder<AssetIsar, bool, QQueryOperations> isWeededProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isWeeded');
     });
   }
 

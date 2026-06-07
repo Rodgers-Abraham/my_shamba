@@ -8,6 +8,7 @@ import '../screens/ledger_screen.dart';
 import '../screens/workshop_screen.dart';
 import '../screens/profile_screen.dart';
 import '../screens/products_screen.dart';
+import '../screens/calendar_screen.dart';
 import '../../core/theme/app_theme.dart';
 
 class MainNavigationShell extends StatefulWidget {
@@ -33,6 +34,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
     super.initState();
     _screens = [
       HarvestHubScreen(farmId: widget.farmId),
+      CalendarScreen(farmId: widget.farmId),
       RegistryScreen(farmId: widget.farmId),
       ProductsScreen(farmId: widget.farmId),
       AuthGuard(child: LedgerScreen(farmId: widget.farmId)),
@@ -152,8 +154,10 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
         onTap: (index) => setState(() => _currentIndex = index),
         type: BottomNavigationBarType.fixed,
         selectedItemColor: AppTheme.primary,
+        unselectedItemColor: AppTheme.textSecondary,
         items: [
           BottomNavigationBarItem(icon: Container(key: _hubKey, child: const Icon(Icons.home)), label: 'Hub'),
+          const BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: 'Calendar'),
           BottomNavigationBarItem(icon: Container(key: _registryKey, child: const Icon(Icons.pets)), label: 'Registry'),
           const BottomNavigationBarItem(icon: Icon(Icons.agriculture), label: 'Products'),
           BottomNavigationBarItem(icon: Container(key: _ledgerKey, child: const Icon(Icons.account_balance_wallet)), label: 'Ledger'),
@@ -173,6 +177,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
             onDestinationSelected: (index) => setState(() => _currentIndex = index),
             destinations: [
               NavigationRailDestination(icon: Container(key: _hubKey, child: const Icon(Icons.home)), label: const Text('Hub')),
+              const NavigationRailDestination(icon: Icon(Icons.calendar_month), label: Text('Calendar')),
               NavigationRailDestination(icon: Container(key: _registryKey, child: const Icon(Icons.pets)), label: const Text('Registry')),
               const NavigationRailDestination(icon: Icon(Icons.agriculture), label: Text('Products')),
               NavigationRailDestination(icon: Container(key: _ledgerKey, child: const Icon(Icons.account_balance_wallet)), label: const Text('Ledger')),

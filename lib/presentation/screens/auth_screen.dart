@@ -110,127 +110,126 @@ class _AuthScreenState extends State<AuthScreen> {
                         _isLogin
                             ? 'Create an account'
                             : 'Already have an account? Login',
-                        style: const TextStyle(color: Color(0xFFFF7643)),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      "By continuing your confirm that you agree \nwith our Term and Condition",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Color(0xFF757575)),
-                    ),
-                    const SizedBox(height: 20),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+                        style: const TextStyle(color: Color(0xFF2E7D32)),
+                        ),
+                        ),
+                        const SizedBox(height: 20),
+                        const Text(
+                        "By continuing your confirm that you agree \nwith our Term and Condition",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Color(0xFF757575)),
+                        ),
+                        const SizedBox(height: 20),
+                        ],
+                        ),
+                        ),
+                        ),
+                        ),
+                        ),
+                        ),
+                        );
+                        }
 
-  Widget _buildForm() {
-    return Form(
-      child: Column(
-        children: [
-          if (!_isLogin) ...[
-            _buildTextField(
-              controller: _firstNameCtrl,
-              hint: "Enter your first name",
-              label: "First Name",
-              icon: userIcon,
-            ),
-            const SizedBox(height: 24),
-            _buildTextField(
-              controller: _lastNameCtrl,
-              hint: "Enter your last name",
-              label: "Last Name",
-              icon: userIcon,
-            ),
-            const SizedBox(height: 24),
-            _buildTextField(
-              controller: _phoneCtrl,
-              hint: "Enter your phone number",
-              label: "Phone Number",
-              icon: phoneIcon,
-              keyboardType: TextInputType.phone,
-            ),
-            const SizedBox(height: 24),
-          ],
-          _buildTextField(
-            controller: _emailCtrl,
-            hint: "Enter your email",
-            label: "Email",
-            icon: emailIcon,
-            keyboardType: TextInputType.emailAddress,
-          ),
-          const SizedBox(height: 24),
-          _buildTextField(
-            controller: _passCtrl,
-            hint: "Enter your password",
-            label: "Password",
-            icon: lockIcon,
-            obscureText: true,
-          ),
-          const SizedBox(height: 32),
-          BlocBuilder<AuthBloc, AuthState>(
-            builder: (context, state) {
-              if (state is AuthLoading) {
-                return const Center(
-                    child: CircularProgressIndicator(color: Color(0xFFFF7643)));
-              }
-              return ElevatedButton(
-                onPressed: _onAction,
-                style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  backgroundColor: const Color(0xFFFF7643),
-                  foregroundColor: Colors.white,
-                  minimumSize: const Size(double.infinity, 48),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                  ),
-                ),
-                child: Text(_isLogin ? "Continue" : "Sign Up"),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
+                        Widget _buildForm() {
+                        return Form(
+                        child: Column(
+                        children: [
+                        if (!_isLogin) ...[
+                        _buildTextField(
+                        controller: _firstNameCtrl,
+                        hint: "Enter your first name",
+                        label: "First Name",
+                        icon: userIcon,
+                        ),
+                        const SizedBox(height: 24),
+                        _buildTextField(
+                        controller: _lastNameCtrl,
+                        hint: "Enter your last name",
+                        label: "Last Name",
+                        icon: userIcon,
+                        ),
+                        const SizedBox(height: 24),
+                        _buildTextField(
+                        controller: _phoneCtrl,
+                        hint: "Enter your phone number",
+                        label: "Phone Number",
+                        icon: phoneIcon,
+                        keyboardType: TextInputType.phone,
+                        ),
+                        const SizedBox(height: 24),
+                        ],
+                        _buildTextField(
+                        controller: _emailCtrl,
+                        hint: "Enter your email",
+                        label: "Email",
+                        icon: emailIcon,
+                        keyboardType: TextInputType.emailAddress,
+                        ),
+                        const SizedBox(height: 24),
+                        _buildTextField(
+                        controller: _passCtrl,
+                        hint: "Enter your password",
+                        label: "Password",
+                        icon: lockIcon,
+                        obscureText: true,
+                        ),
+                        const SizedBox(height: 32),
+                        BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                        if (state is AuthLoading) {
+                        return const Center(child: CircularProgressIndicator(color: Color(0xFF2E7D32)));
+                        }
+                        return ElevatedButton(
+                        onPressed: _onAction,
+                        style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        backgroundColor: const Color(0xFF2E7D32),
+                        foregroundColor: Colors.white,
+                        minimumSize: const Size(double.infinity, 48),
+                        shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(16)),
+                        ),
+                        ),
+                        child: Text(_isLogin ? "Continue" : "Sign Up"),
+                        );
+                        },
+                        ),
+                        ],
+                        ),
+                        );
+                        }
 
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String hint,
-    required String label,
-    required String icon,
-    bool obscureText = false,
-    TextInputType keyboardType = TextInputType.text,
-  }) {
-    return TextFormField(
-      controller: controller,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      decoration: InputDecoration(
-        hintText: hint,
-        labelText: label,
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        hintStyle: const TextStyle(color: Color(0xFF757575)),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-        suffixIcon: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: SvgPicture.string(icon),
-        ),
-        border: authOutlineInputBorder,
-        enabledBorder: authOutlineInputBorder,
-        focusedBorder: authOutlineInputBorder.copyWith(
-          borderSide: const BorderSide(color: Color(0xFFFF7643)),
-        ),
-      ),
-    );
-  }
+                        Widget _buildTextField({
+                        required TextEditingController controller,
+                        required String hint,
+                        required String label,
+                        required String icon,
+                        bool obscureText = false,
+                        TextInputType keyboardType = TextInputType.text,
+                        }) {
+                        return TextFormField(
+                        controller: controller,
+                        obscureText: obscureText,
+                        keyboardType: keyboardType,
+                        decoration: InputDecoration(
+                        hintText: hint,
+                        labelText: label,
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        hintStyle: const TextStyle(color: Color(0xFF757575)),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                        suffixIcon: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: SvgPicture.string(icon),
+                        ),
+                        border: authOutlineInputBorder,
+                        enabledBorder: authOutlineInputBorder,
+                        focusedBorder: authOutlineInputBorder.copyWith(
+                        borderSide: const BorderSide(color: Color(0xFF2E7D32)),
+                        ),
+                        ),
+                        );
+                        }
+
 
   void _onAction() {
     if (_isLogin) {
