@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.My Shamba"
+    namespace = "com.example.my_shamba"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -16,7 +16,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.My Shamba"
+        applicationId = "com.example.my_shamba"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

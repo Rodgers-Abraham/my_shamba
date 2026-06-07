@@ -1,4 +1,4 @@
-# My Shamba
+# my_shamba
 
 A cross-platform (Mobile & Web) farm management application built with Clean Architecture, Firebase, and BLoC.
 

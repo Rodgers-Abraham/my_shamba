@@ -1,4 +1,4 @@
-package com.example.My Shamba
+package com.example.my_shamba
 
 import io.flutter.embedding.android.FlutterActivity
 

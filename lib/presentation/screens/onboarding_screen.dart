@@ -13,8 +13,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   int currentPage = 0;
   List<Map<String, String>> splashData = [
     {
-      "text": "Welcome to My Shamba, Let’s grow!",
-      "image": "https://i.postimg.cc/mhhVywp9/splash-1.png" // Placeholder, user should update
+      "text": "Welcome to my_shamba, Let’s grow!",
+      "image":
+          "https://i.postimg.cc/mhhVywp9/splash-1.png" // Placeholder, user should update
     },
     {
       "text":
@@ -22,7 +23,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       "image": "https://i.postimg.cc/PNcy3w0R/splash-2.png"
     },
     {
-      "text": "Manage your inventory and finances. \nPrecision farming starts here.",
+      "text":
+          "Manage your inventory and finances. \nPrecision farming starts here.",
       "image": "https://i.postimg.cc/wRtVxqR2/splash-3.png"
     },
   ];
@@ -81,7 +83,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         onPressed: () {
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
-                              builder: (_) => const MainNavigationShell(farmId: 'guest'),
+                              builder: (_) =>
+                                  const MainNavigationShell(farmId: 'guest'),
                             ),
                           );
                         },
@@ -123,7 +126,7 @@ class SplashContent extends StatelessWidget {
       children: <Widget>[
         const Spacer(),
         const Text(
-          "MY SHAMBA",
+          "my_shamba",
           style: TextStyle(
             fontSize: 32,
             color: AppTheme.primary,

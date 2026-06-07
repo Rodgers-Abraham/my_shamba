@@ -38,7 +38,7 @@ class MyShambaApp extends StatelessWidget {
         BlocProvider(create: (_) => di.sl<SupplyBloc>()),
       ],
       child: MaterialApp(
-        title: 'My Shamba',
+        title: 'my_shamba',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         home: const OnboardingScreen(),
