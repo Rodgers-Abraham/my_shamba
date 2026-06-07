@@ -6,6 +6,7 @@ import '../bloc/auth_state.dart';
 import '../bloc/auth_event.dart';
 import '../../domain/entities/user_entity.dart';
 import '../widgets/auth_guard.dart';
+import 'onboarding_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});

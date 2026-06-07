@@ -60,11 +60,21 @@ class AssetRepositoryImpl implements AssetRepository {
         ..notes = asset.notes
         ..status = asset is LivestockEntity ? asset.status : null
         ..variety = asset is CropEntity ? asset.variety : null
-        ..isSynced = false;
+        ..isSynced = true;
 
       // Instant local write
       await _isar.writeTxn(() async {
         await _isar.assetIsars.put(newLocalAsset);
+      });
+
+      // Remote write
+      await _firestore.collection('farms').doc(asset.farmId).collection('assets').doc(syncId).set({
+        'name': asset.name,
+        'type': asset.type,
+        'createdAt': asset.createdAt,
+        'notes': asset.notes,
+        if (asset is LivestockEntity) 'status': asset.status,
+        if (asset is CropEntity) 'variety': asset.variety,
       });
 
       return const Right(null);

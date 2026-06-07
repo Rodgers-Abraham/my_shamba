@@ -8,9 +8,10 @@ import '../../domain/repositories/supply_repository.dart';
 import '../local/models/isar_models.dart';
 
 class SupplyRepositoryImpl implements SupplyRepository {
+  final FirebaseFirestore _firestore;
   final Isar _isar;
 
-  SupplyRepositoryImpl(this._isar);
+  SupplyRepositoryImpl(this._firestore, this._isar);
 
   @override
   Future<Either<Failure, List<SupplyEntity>>> getSupplies(String farmId) async {
@@ -38,11 +39,17 @@ class SupplyRepositoryImpl implements SupplyRepository {
       final existing = await _isar.supplyItemIsars.filter().syncIdEqualTo(supply.id).findFirst();
       if (existing != null) {
         existing.quantity = supply.quantity;
-        existing.isSynced = false;
+        existing.isSynced = true;
         await _isar.writeTxn(() async {
           await _isar.supplyItemIsars.put(existing);
         });
       }
+
+      // Remote update
+      await _firestore.collection('farms').doc(supply.farmId).collection('supplies').doc(supply.id).update({
+        'quantity': supply.quantity,
+      });
+
       return const Right(null);
     } catch (e) {
       return Left(ServerFailure(e.toString()));
@@ -60,11 +67,20 @@ class SupplyRepositoryImpl implements SupplyRepository {
         ..category = supply.category
         ..quantity = supply.quantity
         ..unit = supply.unit
-        ..isSynced = false;
+        ..isSynced = true;
 
       await _isar.writeTxn(() async {
         await _isar.supplyItemIsars.put(newSupply);
       });
+
+      // Remote write
+      await _firestore.collection('farms').doc(supply.farmId).collection('supplies').doc(syncId).set({
+        'name': supply.name,
+        'category': supply.category,
+        'quantity': supply.quantity,
+        'unit': supply.unit,
+      });
+
       return const Right(null);
     } catch (e) {
       return Left(ServerFailure(e.toString()));

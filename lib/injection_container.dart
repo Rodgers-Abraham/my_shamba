@@ -61,16 +61,16 @@ Future<void> init() async {
     () => FarmRepositoryImpl(sl(), sl()),
   );
   sl.registerLazySingleton<HarvestRepository>(
-    () => HarvestRepositoryImpl(sl()),
+    () => HarvestRepositoryImpl(sl(), sl()),
   );
   sl.registerLazySingleton<AssetRepository>(
     () => AssetRepositoryImpl(sl(), sl()),
   );
   sl.registerLazySingleton<LedgerRepository>(
-    () => LedgerRepositoryImpl(sl()),
+    () => LedgerRepositoryImpl(sl(), sl()),
   );
   sl.registerLazySingleton<SupplyRepository>(
-    () => SupplyRepositoryImpl(sl()),
+    () => SupplyRepositoryImpl(sl(), sl()),
   );
   sl.registerLazySingleton<WeatherRepository>(
     () => WeatherRepositoryImpl(client: sl()),

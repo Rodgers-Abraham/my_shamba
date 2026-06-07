@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../core/theme/app_theme.dart';
 import '../../core/utils/inputs_parser.dart';
 import '../../domain/entities/asset_entity.dart';
 import '../bloc/asset_bloc.dart';

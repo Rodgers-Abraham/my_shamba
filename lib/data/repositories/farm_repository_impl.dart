@@ -83,12 +83,15 @@ class FarmRepositoryImpl implements FarmRepository {
         ..subCounty = subCounty
         ..constituency = constituency
         ..ward = ward
-        ..isSynced = false;
+        ..isSynced = true; // Mark as synced if we write to firestore now
 
       // Instant local write
       await _isar.writeTxn(() async {
         await _isar.farmIsars.put(newLocalFarm);
       });
+
+      // Write to Firestore for remote persistence
+      await _firestore.collection('farms').doc(syncId).set(farmModel.toJson());
 
       return Right(farmModel);
     } catch (e) {

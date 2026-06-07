@@ -6,6 +6,8 @@ import '../bloc/farm_bloc.dart';
 import '../bloc/farm_state.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_state.dart';
+import '../bloc/harvest_bloc.dart';
+import '../../domain/entities/harvest_entry.dart';
 import 'auth_screen.dart';
 
 class HarvestHubScreen extends StatefulWidget {
@@ -28,6 +30,46 @@ class _HarvestHubScreenState extends State<HarvestHubScreen> {
     if (authState is! Authenticated) {
       Navigator.push(context, MaterialPageRoute(builder: (_) => const AuthScreen()));
       return;
+    }
+
+    // Save Milk logs
+    if (_morningMilkQuantityMl > 0) {
+      context.read<HarvestBloc>().add(AddHarvest(HarvestEntry(
+        id: '', 
+        farmId: widget.farmId, 
+        quantity: _morningMilkQuantityMl.toDouble(), 
+        type: 'Milk (Morning)', 
+        date: DateTime.now()
+      )));
+    }
+    if (_afternoonMilkQuantityMl > 0) {
+       context.read<HarvestBloc>().add(AddHarvest(HarvestEntry(
+        id: '', 
+        farmId: widget.farmId, 
+        quantity: _afternoonMilkQuantityMl.toDouble(), 
+        type: 'Milk (Afternoon)', 
+        date: DateTime.now()
+      )));
+    }
+    if (_eveningMilkQuantityMl > 0) {
+       context.read<HarvestBloc>().add(AddHarvest(HarvestEntry(
+        id: '', 
+        farmId: widget.farmId, 
+        quantity: _eveningMilkQuantityMl.toDouble(), 
+        type: 'Milk (Evening)', 
+        date: DateTime.now()
+      )));
+    }
+    
+    // Save Eggs
+    if (_eggQuantity > 0) {
+       context.read<HarvestBloc>().add(AddHarvest(HarvestEntry(
+        id: '', 
+        farmId: widget.farmId, 
+        quantity: _eggQuantity.toDouble(), 
+        type: 'Eggs', 
+        date: DateTime.now()
+      )));
     }
 
     setState(() {

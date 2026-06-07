@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -46,8 +47,8 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAi2ZqpYdE7Yg7peFCQvl3bVXb1rFKqJp4',
+  static final FirebaseOptions web = FirebaseOptions(
+    apiKey: dotenv.env['FIREBASE_WEB_API_KEY'] ?? '',
     appId: '1:191471603356:web:e9055579efdf087418e759',
     messagingSenderId: '191471603356',
     projectId: 'my-shamba-1236b',
@@ -56,16 +57,16 @@ class DefaultFirebaseOptions {
     measurementId: 'G-3JZC2ZTVBK',
   );
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDm9XMJ8xMoR3KbEdMGmK630gFE2U4hT0Q',
+  static final FirebaseOptions android = FirebaseOptions(
+    apiKey: dotenv.env['FIREBASE_ANDROID_API_KEY'] ?? '',
     appId: '1:191471603356:android:ae4ae8849581bca718e759',
     messagingSenderId: '191471603356',
     projectId: 'my-shamba-1236b',
     storageBucket: 'my-shamba-1236b.firebasestorage.app',
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCx_Of6e134-md4-ujXLJMxl2FkNis-Ejc',
+  static final FirebaseOptions ios = FirebaseOptions(
+    apiKey: dotenv.env['FIREBASE_IOS_API_KEY'] ?? '',
     appId: '1:191471603356:ios:a90e19c96208df7618e759',
     messagingSenderId: '191471603356',
     projectId: 'my-shamba-1236b',
