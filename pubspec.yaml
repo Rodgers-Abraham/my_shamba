@@ -1,4 +1,4 @@
-name: My Shamba
+name: my_shamba
 description: "A cross-platform farm management application."
 publish_to: 'none'
 version: 1.0.0+1

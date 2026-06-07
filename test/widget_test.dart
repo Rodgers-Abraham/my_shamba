@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:My Shamba/main.dart' show MyShambaApp;
+import 'package:my_shamba/main.dart' show MyShambaApp;
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

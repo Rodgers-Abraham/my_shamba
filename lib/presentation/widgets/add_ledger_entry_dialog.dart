@@ -25,7 +25,7 @@ class _AddLedgerEntryDialogState extends State<AddLedgerEntryDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             DropdownButtonFormField<String>(
-              value: _selectedCategory,
+              initialValue: _selectedCategory,
               items: const [
                 DropdownMenuItem(value: 'Income', child: Text('Income (+)')),
                 DropdownMenuItem(value: 'Expense', child: Text('Expense (-)')),
@@ -42,32 +42,36 @@ class _AddLedgerEntryDialogState extends State<AddLedgerEntryDialog> {
             const SizedBox(height: 16),
             TextField(
               controller: _descCtrl,
-              decoration: const InputDecoration(labelText: 'Description (e.g. Sales, Wages)'),
+              decoration: const InputDecoration(
+                  labelText: 'Description (e.g. Sales, Wages)'),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _partyCtrl,
-              decoration: const InputDecoration(labelText: 'Associated Person (e.g. Worker name, Buyer)'),
+              decoration: const InputDecoration(
+                  labelText: 'Associated Person (e.g. Worker name, Buyer)'),
             ),
           ],
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+        TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel')),
         ElevatedButton(
           onPressed: () {
             final amount = double.tryParse(_amountCtrl.text) ?? 0.0;
             if (amount <= 0 || _descCtrl.text.isEmpty) return;
 
             context.read<LedgerBloc>().add(AddEntry(
-              farmId: widget.farmId,
-              amount: amount,
-              category: _selectedCategory,
-              description: _descCtrl.text,
-              date: DateTime.now(),
-              associatedParty: _partyCtrl.text,
-            ));
-            
+                  farmId: widget.farmId,
+                  amount: amount,
+                  category: _selectedCategory,
+                  description: _descCtrl.text,
+                  date: DateTime.now(),
+                  associatedParty: _partyCtrl.text,
+                ));
+
             Navigator.pop(context);
           },
           child: const Text('Save'),

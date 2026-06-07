@@ -16,7 +16,8 @@ class UiverseButton extends StatefulWidget {
   State<UiverseButton> createState() => _UiverseButtonState();
 }
 
-class _UiverseButtonState extends State<UiverseButton> with SingleTickerProviderStateMixin {
+class _UiverseButtonState extends State<UiverseButton>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   bool _isHovered = false;
 
@@ -65,12 +66,14 @@ class _UiverseButtonState extends State<UiverseButton> with SingleTickerProvider
               color: const Color(0xFF006BB3), // rgb(0 107 179)
               borderRadius: BorderRadius.circular(9999),
               border: Border.all(
-                color: _isHovered ? Colors.white.withOpacity(0.6) : Colors.white.withOpacity(0.3),
+                color: _isHovered
+                    ? Colors.white.withValues(alpha: 0.6)
+                    : Colors.white.withValues(alpha: 0.3),
                 width: 3,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
+                  color: Colors.black.withValues(alpha: 0.2),
                   blurRadius: 20,
                   offset: const Offset(0, 10),
                 ),
@@ -94,7 +97,8 @@ class _UiverseButtonState extends State<UiverseButton> with SingleTickerProvider
                       const SizedBox(width: 10),
                       AnimatedContainer(
                         duration: const Duration(milliseconds: 300),
-                        transform: Matrix4.translationValues(_isHovered ? 4 : 0, 0, 0),
+                        transform:
+                            Matrix4.translationValues(_isHovered ? 4 : 0, 0, 0),
                         child: Icon(widget.icon, color: Colors.white, size: 24),
                       ),
                     ],
@@ -104,7 +108,8 @@ class _UiverseButtonState extends State<UiverseButton> with SingleTickerProvider
                     animation: _controller,
                     builder: (context, child) {
                       return Positioned(
-                        left: -100 + (_controller.value * 300), // Moves from -100 to 200
+                        left: -100 +
+                            (_controller.value * 300), // Moves from -100 to 200
                         top: 0,
                         bottom: 0,
                         width: 100,

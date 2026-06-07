@@ -15,7 +15,7 @@ class AddAssetDialog extends StatefulWidget {
 class _AddAssetDialogState extends State<AddAssetDialog> {
   final _nameCtrl = TextEditingController();
   final _notesCtrl = TextEditingController();
-  
+
   String _selectedType = 'Livestock';
   String? _selectedCategory;
   String? _selectedSubcategory;
@@ -47,20 +47,24 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
   Widget build(BuildContext context) {
     if (_isLoading) {
       return const AlertDialog(
-        content: SizedBox(height: 100, child: Center(child: CircularProgressIndicator())),
+        content: SizedBox(
+            height: 100, child: Center(child: CircularProgressIndicator())),
       );
     }
 
     final categories = ['Livestock', 'Crops'];
-    List<String> subcategories = InputsParser.getSubcategories(_parsedData, _selectedCategory ?? '');
+    List<String> subcategories =
+        InputsParser.getSubcategories(_parsedData, _selectedCategory ?? '');
     List<String> items = [];
     if (_selectedSubcategory != null) {
-      items = InputsParser.getItems(_parsedData, _selectedCategory!, _selectedSubcategory!);
+      items = InputsParser.getItems(
+          _parsedData, _selectedCategory!, _selectedSubcategory!);
     }
-    
+
     List<String> varieties = [];
     if (_selectedItem != null) {
-      varieties = InputsParser.getVarieties(_parsedData, _selectedCategory!, _selectedSubcategory!, _selectedItem!);
+      varieties = InputsParser.getVarieties(_parsedData, _selectedCategory!,
+          _selectedSubcategory!, _selectedItem!);
     }
 
     return AlertDialog(
@@ -71,12 +75,15 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
           children: [
             TextField(
               controller: _nameCtrl,
-              decoration: const InputDecoration(labelText: 'Name (e.g. Cow Mary)'),
+              decoration:
+                  const InputDecoration(labelText: 'Name (e.g. Cow Mary)'),
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
-              value: _selectedCategory,
-              items: categories.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
+              initialValue: _selectedCategory,
+              items: categories
+                  .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                  .toList(),
               onChanged: (val) {
                 setState(() {
                   _selectedCategory = val;
@@ -92,8 +99,10 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
             const SizedBox(height: 16),
             if (subcategories.isNotEmpty)
               DropdownButtonFormField<String>(
-                value: _selectedSubcategory,
-                items: subcategories.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
+                initialValue: _selectedSubcategory,
+                items: subcategories
+                    .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                    .toList(),
                 onChanged: (val) {
                   setState(() {
                     _selectedSubcategory = val;
@@ -107,8 +116,10 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
             const SizedBox(height: 16),
             if (items.isNotEmpty)
               DropdownButtonFormField<String>(
-                value: _selectedItem,
-                items: items.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
+                initialValue: _selectedItem,
+                items: items
+                    .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                    .toList(),
                 onChanged: (val) {
                   setState(() {
                     _selectedItem = val;
@@ -121,20 +132,25 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
             const SizedBox(height: 16),
             if (varieties.isNotEmpty)
               DropdownButtonFormField<String>(
-                value: _selectedVariety,
-                items: varieties.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
+                initialValue: _selectedVariety,
+                items: varieties
+                    .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                    .toList(),
                 onChanged: (val) {
                   setState(() {
                     _selectedVariety = val;
                   });
                 },
-                decoration: InputDecoration(labelText: _selectedType == 'Livestock' ? 'Breed/Type' : 'Variety'),
+                decoration: InputDecoration(
+                    labelText: _selectedType == 'Livestock'
+                        ? 'Breed/Type'
+                        : 'Variety'),
                 isExpanded: true,
               ),
             if (_selectedType == 'Livestock') ...[
-               const SizedBox(height: 16),
-               DropdownButtonFormField<String>(
-                value: _selectedStatus,
+              const SizedBox(height: 16),
+              DropdownButtonFormField<String>(
+                initialValue: _selectedStatus,
                 items: const [
                   DropdownMenuItem(value: 'Healthy', child: Text('Healthy')),
                   DropdownMenuItem(value: 'Pregnant', child: Text('Pregnant')),
@@ -146,7 +162,8 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
                     _selectedStatus = val;
                   });
                 },
-                decoration: const InputDecoration(labelText: 'Status (Optional)'),
+                decoration:
+                    const InputDecoration(labelText: 'Status (Optional)'),
               ),
             ],
             const SizedBox(height: 16),
@@ -159,11 +176,13 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+        TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel')),
         ElevatedButton(
           onPressed: () {
             if (_nameCtrl.text.isEmpty) return;
-            
+
             AssetEntity newAsset;
             if (_selectedType == 'Livestock') {
               newAsset = LivestockEntity(
@@ -186,7 +205,8 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
             }
 
             context.read<AssetBloc>().add(AddAsset(newAsset));
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Asset Added!')));
+            ScaffoldMessenger.of(context)
+                .showSnackBar(const SnackBar(content: Text('Asset Added!')));
             Navigator.pop(context);
           },
           child: const Text('Save'),

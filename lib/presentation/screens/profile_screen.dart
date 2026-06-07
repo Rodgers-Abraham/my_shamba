@@ -9,7 +9,7 @@ import '../widgets/auth_guard.dart';
 import 'onboarding_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +32,15 @@ class _ProfileDesignView extends StatelessWidget {
         builder: (context, state) {
           if (state is Authenticated) {
             final user = state.user;
-            final initials = user.fullName.trim().isNotEmpty 
-                ? user.fullName.trim().split(' ').where((e) => e.isNotEmpty).map((e) => e[0]).take(2).join().toUpperCase() 
+            final initials = user.fullName.trim().isNotEmpty
+                ? user.fullName
+                    .trim()
+                    .split(' ')
+                    .where((e) => e.isNotEmpty)
+                    .map((e) => e[0])
+                    .take(2)
+                    .join()
+                    .toUpperCase()
                 : 'U';
 
             return SingleChildScrollView(
@@ -63,7 +70,8 @@ class _ProfileDesignView extends StatelessWidget {
                     press: () {
                       context.read<AuthBloc>().add(LogoutRequested());
                       Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (_) => const OnboardingScreen()),
+                        MaterialPageRoute(
+                            builder: (_) => const OnboardingScreen()),
                         (route) => false,
                       );
                     },
@@ -93,7 +101,9 @@ class _ProfileDesignView extends StatelessWidget {
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("Close")),
+          TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Close")),
         ],
       ),
     );
@@ -105,7 +115,11 @@ class _ProfileDesignView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.grey)),
+          Text(label,
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                  color: Colors.grey)),
           Text(value, style: const TextStyle(fontSize: 16)),
         ],
       ),
@@ -127,10 +141,13 @@ class _ProfilePicInitials extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           CircleAvatar(
-            backgroundColor: const Color(0xFFFF7643).withOpacity(0.1),
+            backgroundColor: const Color(0xFFFF7643).withValues(alpha: 0.1),
             child: Text(
               initials,
-              style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Color(0xFFFF7643)),
+              style: const TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFFF7643)),
             ),
           ),
           Positioned(

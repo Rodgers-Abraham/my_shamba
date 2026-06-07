@@ -49,8 +49,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
               return const Center(child: CircularProgressIndicator());
             }
             if (state is SupplyLoaded) {
-              final produce = state.supplies.where((s) => s.category == 'Produce').toList();
-              final inputs = state.supplies.where((s) => s.category == 'Input').toList();
+              final produce =
+                  state.supplies.where((s) => s.category == 'Produce').toList();
+              final inputs =
+                  state.supplies.where((s) => s.category == 'Input').toList();
               return TabBarView(
                 children: [
                   _buildListView(produce, Icons.grass, Colors.amber),
@@ -72,10 +74,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
     );
   }
 
-  Widget _buildListView(List<SupplyEntity> items, IconData icon, MaterialColor color) {
+  Widget _buildListView(
+      List<SupplyEntity> items, IconData icon, MaterialColor color) {
     if (items.isEmpty) {
       return Center(
-        child: Text('No items registered.', style: TextStyle(color: AppTheme.textSecondary)),
+        child: Text('No items registered.',
+            style: TextStyle(color: AppTheme.textSecondary)),
       );
     }
     return ListView.builder(
@@ -90,8 +94,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
               backgroundColor: color.shade100,
               child: Icon(icon, color: color.shade800),
             ),
-            title: Text(item.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-            trailing: Text('${item.quantity} ${item.unit}', style: const TextStyle(fontWeight: FontWeight.bold)),
+            title: Text(item.name,
+                style: const TextStyle(fontWeight: FontWeight.bold)),
+            trailing: Text('${item.quantity} ${item.unit}',
+                style: const TextStyle(fontWeight: FontWeight.bold)),
           ),
         );
       },
@@ -101,7 +107,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
   void _showAddProductDialog(BuildContext context) {
     final authState = context.read<AuthBloc>().state;
     if (authState is! Authenticated) {
-      Navigator.push(context, MaterialPageRoute(builder: (_) => const AuthScreen()));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (_) => const AuthScreen()));
       return;
     }
 
@@ -122,7 +129,7 @@ class _AddProductDialog extends StatefulWidget {
 
 class _AddProductDialogState extends State<_AddProductDialog> {
   final _qtyCtrl = TextEditingController();
-  
+
   String _selectedTab = 'Produce'; // 'Produce' or 'Input'
   String? _selectedCategory;
   String? _selectedSubcategory;
@@ -151,14 +158,19 @@ class _AddProductDialogState extends State<_AddProductDialog> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const AlertDialog(content: SizedBox(height: 100, child: Center(child: CircularProgressIndicator())));
+      return const AlertDialog(
+          content: SizedBox(
+              height: 100, child: Center(child: CircularProgressIndicator())));
     }
 
-    final categories = _selectedTab == 'Produce' ? ['Crops'] : ['Agricultural Inputs'];
-    List<String> subcategories = InputsParser.getSubcategories(_parsedData, _selectedCategory ?? categories.first);
+    final categories =
+        _selectedTab == 'Produce' ? ['Crops'] : ['Agricultural Inputs'];
+    List<String> subcategories = InputsParser.getSubcategories(
+        _parsedData, _selectedCategory ?? categories.first);
     List<String> items = [];
     if (_selectedSubcategory != null) {
-      items = InputsParser.getItems(_parsedData, _selectedCategory ?? categories.first, _selectedSubcategory!);
+      items = InputsParser.getItems(_parsedData,
+          _selectedCategory ?? categories.first, _selectedSubcategory!);
     }
 
     return AlertDialog(
@@ -168,15 +180,20 @@ class _AddProductDialogState extends State<_AddProductDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             DropdownButtonFormField<String>(
-              value: _selectedTab,
+              initialValue: _selectedTab,
               items: const [
-                DropdownMenuItem(value: 'Produce', child: Text('Produce (Grains/Cereals)')),
-                DropdownMenuItem(value: 'Input', child: Text('Farm Input (Fertilizer/Seed)')),
+                DropdownMenuItem(
+                    value: 'Produce', child: Text('Produce (Grains/Cereals)')),
+                DropdownMenuItem(
+                    value: 'Input',
+                    child: Text('Farm Input (Fertilizer/Seed)')),
               ],
               onChanged: (val) {
                 setState(() {
                   _selectedTab = val!;
-                  _selectedCategory = _selectedTab == 'Produce' ? 'Crops' : 'Agricultural Inputs';
+                  _selectedCategory = _selectedTab == 'Produce'
+                      ? 'Crops'
+                      : 'Agricultural Inputs';
                   _selectedSubcategory = null;
                   _selectedItem = null;
                 });
@@ -186,8 +203,10 @@ class _AddProductDialogState extends State<_AddProductDialog> {
             const SizedBox(height: 16),
             if (subcategories.isNotEmpty)
               DropdownButtonFormField<String>(
-                value: _selectedSubcategory,
-                items: subcategories.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
+                initialValue: _selectedSubcategory,
+                items: subcategories
+                    .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                    .toList(),
                 onChanged: (val) {
                   setState(() {
                     _selectedSubcategory = val;
@@ -200,8 +219,10 @@ class _AddProductDialogState extends State<_AddProductDialog> {
             const SizedBox(height: 16),
             if (items.isNotEmpty)
               DropdownButtonFormField<String>(
-                value: _selectedItem,
-                items: items.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
+                initialValue: _selectedItem,
+                items: items
+                    .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                    .toList(),
                 onChanged: (val) {
                   setState(() => _selectedItem = val);
                 },
@@ -212,19 +233,22 @@ class _AddProductDialogState extends State<_AddProductDialog> {
             TextField(
               controller: _qtyCtrl,
               keyboardType: TextInputType.number,
-              decoration: const InputDecoration(labelText: 'Quantity (e.g. 50 Bags)'),
+              decoration:
+                  const InputDecoration(labelText: 'Quantity (e.g. 50 Bags)'),
             ),
           ],
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+        TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel')),
         ElevatedButton(
           onPressed: () {
             if (_selectedItem == null || _qtyCtrl.text.isEmpty) return;
-            
+
             final qty = double.tryParse(_qtyCtrl.text) ?? 0.0;
-            
+
             final newSupply = SupplyEntity(
               id: '',
               farmId: widget.farmId,
@@ -235,7 +259,8 @@ class _AddProductDialogState extends State<_AddProductDialog> {
             );
 
             context.read<SupplyBloc>().add(AddSupply(newSupply));
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Saved to Inventory!')));
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Saved to Inventory!')));
             Navigator.pop(context);
           },
           child: const Text('Save'),
@@ -244,4 +269,3 @@ class _AddProductDialogState extends State<_AddProductDialog> {
     );
   }
 }
-

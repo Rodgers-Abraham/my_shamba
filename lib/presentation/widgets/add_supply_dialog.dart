@@ -15,7 +15,7 @@ class AddSupplyDialog extends StatefulWidget {
 
 class _AddSupplyDialogState extends State<AddSupplyDialog> {
   final _qtyCtrl = TextEditingController();
-  
+
   String _selectedCategory = 'Agricultural Inputs';
   String? _selectedSubcategory;
   String? _selectedItem;
@@ -45,20 +45,24 @@ class _AddSupplyDialogState extends State<AddSupplyDialog> {
   Widget build(BuildContext context) {
     if (_isLoading) {
       return const AlertDialog(
-        content: SizedBox(height: 100, child: Center(child: CircularProgressIndicator())),
+        content: SizedBox(
+            height: 100, child: Center(child: CircularProgressIndicator())),
       );
     }
 
     final categories = ['Agricultural Inputs', 'Forestry & Timber'];
-    List<String> subcategories = InputsParser.getSubcategories(_parsedData, _selectedCategory);
+    List<String> subcategories =
+        InputsParser.getSubcategories(_parsedData, _selectedCategory);
     List<String> items = [];
     if (_selectedSubcategory != null) {
-      items = InputsParser.getItems(_parsedData, _selectedCategory, _selectedSubcategory!);
+      items = InputsParser.getItems(
+          _parsedData, _selectedCategory, _selectedSubcategory!);
     }
-    
+
     List<String> varieties = [];
     if (_selectedItem != null) {
-      varieties = InputsParser.getVarieties(_parsedData, _selectedCategory, _selectedSubcategory!, _selectedItem!);
+      varieties = InputsParser.getVarieties(_parsedData, _selectedCategory,
+          _selectedSubcategory!, _selectedItem!);
     }
 
     return AlertDialog(
@@ -68,8 +72,10 @@ class _AddSupplyDialogState extends State<AddSupplyDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             DropdownButtonFormField<String>(
-              value: _selectedCategory,
-              items: categories.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
+              initialValue: _selectedCategory,
+              items: categories
+                  .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                  .toList(),
               onChanged: (val) {
                 setState(() {
                   _selectedCategory = val!;
@@ -83,8 +89,10 @@ class _AddSupplyDialogState extends State<AddSupplyDialog> {
             const SizedBox(height: 16),
             if (subcategories.isNotEmpty)
               DropdownButtonFormField<String>(
-                value: _selectedSubcategory,
-                items: subcategories.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
+                initialValue: _selectedSubcategory,
+                items: subcategories
+                    .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                    .toList(),
                 onChanged: (val) {
                   setState(() {
                     _selectedSubcategory = val;
@@ -98,8 +106,10 @@ class _AddSupplyDialogState extends State<AddSupplyDialog> {
             const SizedBox(height: 16),
             if (items.isNotEmpty)
               DropdownButtonFormField<String>(
-                value: _selectedItem,
-                items: items.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
+                initialValue: _selectedItem,
+                items: items
+                    .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                    .toList(),
                 onChanged: (val) {
                   setState(() {
                     _selectedItem = val;
@@ -112,8 +122,10 @@ class _AddSupplyDialogState extends State<AddSupplyDialog> {
             const SizedBox(height: 16),
             if (varieties.isNotEmpty)
               DropdownButtonFormField<String>(
-                value: _selectedVariety,
-                items: varieties.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
+                initialValue: _selectedVariety,
+                items: varieties
+                    .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                    .toList(),
                 onChanged: (val) {
                   setState(() {
                     _selectedVariety = val;
@@ -132,11 +144,13 @@ class _AddSupplyDialogState extends State<AddSupplyDialog> {
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+        TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel')),
         ElevatedButton(
           onPressed: () {
             if (_selectedItem == null || _qtyCtrl.text.isEmpty) return;
-            
+
             final qty = double.tryParse(_qtyCtrl.text) ?? 0.0;
             String name = _selectedItem!;
             if (_selectedVariety != null) {
@@ -147,13 +161,17 @@ class _AddSupplyDialogState extends State<AddSupplyDialog> {
               id: '',
               farmId: widget.farmId,
               name: name,
-              category: _selectedSubcategory?.contains('Tool') == true || _selectedCategory == 'Forestry & Timber' ? 'Tool' : 'Consumable',
+              category: _selectedSubcategory?.contains('Tool') == true ||
+                      _selectedCategory == 'Forestry & Timber'
+                  ? 'Tool'
+                  : 'Consumable',
               quantity: qty,
               unit: 'Units', // Could be made dynamic
             );
 
             context.read<SupplyBloc>().add(AddSupply(newSupply));
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Supply Added!')));
+            ScaffoldMessenger.of(context)
+                .showSnackBar(const SnackBar(content: Text('Supply Added!')));
             Navigator.pop(context);
           },
           child: const Text('Save'),
