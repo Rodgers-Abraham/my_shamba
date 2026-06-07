@@ -1,6 +1,6 @@
 // You need to register your app in the Firebase Console:
 // 1. Go to https://console.firebase.google.com/
-// 2. Add an Android app with the package name "com.example.my_shamba"
+// 2. Add an Android app with the package name "com.example.My Shamba"
 // 3. Download "google-services.json" and place it in the android/app/ directory
 
 // For Android build configuration:
