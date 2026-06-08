@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:confetti/confetti.dart';
 import '../../core/theme/app_theme.dart';
 import '../widgets/weather_widget.dart';
 import '../bloc/farm_bloc.dart';
@@ -30,10 +32,19 @@ class _HarvestHubScreenState extends State<HarvestHubScreen> {
   String? _selectedCowId;
   String? _selectedCowName;
 
+  late ConfettiController _confettiController;
+
   @override
   void initState() {
     super.initState();
     context.read<AssetBloc>().add(LoadAssets(widget.farmId));
+    _confettiController = ConfettiController(duration: const Duration(seconds: 2));
+  }
+
+  @override
+  void dispose() {
+    _confettiController.dispose();
+    super.dispose();
   }
 
   void _logHarvest() {
@@ -87,6 +98,10 @@ class _HarvestHubScreenState extends State<HarvestHubScreen> {
       )));
     }
 
+    // Rich Haptic Feedback on successful save
+    HapticFeedback.heavyImpact();
+    _confettiController.play();
+
     setState(() {
       _streakCount++;
       _morningMilkQuantityL = 0.0;
@@ -103,6 +118,16 @@ class _HarvestHubScreenState extends State<HarvestHubScreen> {
         backgroundColor: AppTheme.success,
       ),
     );
+  }
+
+  void _addQuantity(Function(double) updater, double val) {
+    HapticFeedback.lightImpact();
+    updater(val);
+  }
+
+  void _addEggQuantity(int val) {
+    HapticFeedback.lightImpact();
+    setState(() => _eggQuantity += val);
   }
 
   @override
@@ -141,98 +166,120 @@ class _HarvestHubScreenState extends State<HarvestHubScreen> {
                 ),
               ],
             ),
-            body: SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Howdy Farmer!',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 16),
-
-                  WeatherWidget(ward: wardName),
-
-                  const SizedBox(height: 16),
-                  _buildStreakWidget(),
-
-                  const SizedBox(height: 16),
-                  _buildAlertsCarousel(),
-
-                  const SizedBox(height: 24),
-                  const Text(
-                    'Quick Log',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 12),
-                  
-                  _buildCowSelector(),
-
-                  const SizedBox(height: 16),
-
-                  _buildQuickLogCard(
-                    title: 'Morning Milk (L)',
-                    icon: Icons.water_drop,
-                    color: Colors.blue.shade100,
-                    quantity: _morningMilkQuantityL,
-                    onAdd: (val) => setState(() => _morningMilkQuantityL += val),
-                    onRemove: () => setState(
-                      () => _morningMilkQuantityL = _morningMilkQuantityL > 0
-                          ? _morningMilkQuantityL - 0.1
-                          : 0,
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
-                  _buildQuickLogCard(
-                    title: 'Afternoon Milk (L)',
-                    icon: Icons.water_drop,
-                    color: Colors.yellow.shade100,
-                    quantity: _afternoonMilkQuantityL,
-                    onAdd: (val) => setState(() => _afternoonMilkQuantityL += val),
-                    onRemove: () => setState(
-                      () => _afternoonMilkQuantityL = _afternoonMilkQuantityL > 0
-                          ? _afternoonMilkQuantityL - 0.1
-                          : 0,
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
-                  _buildQuickLogCard(
-                    title: 'Evening Milk (L)',
-                    icon: Icons.water_drop,
-                    color: Colors.orange.shade100,
-                    quantity: _eveningMilkQuantityL,
-                    onAdd: (val) => setState(() => _eveningMilkQuantityL += val),
-                    onRemove: () => setState(
-                      () => _eveningMilkQuantityL = _eveningMilkQuantityL > 0
-                          ? _eveningMilkQuantityL - 0.1
-                          : 0,
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  _buildEggLogCard(),
-
-                  const SizedBox(height: 32),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 56,
-                    child: ElevatedButton.icon(
-                      icon: const Icon(Icons.check),
-                      label: const Text(
-                        'Save Daily Log',
-                        style: TextStyle(fontSize: 18),
+            body: Stack(
+              children: [
+                SingleChildScrollView(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Howdy Farmer!',
+                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                       ),
-                      onPressed: ((_morningMilkQuantityL > 0 || _afternoonMilkQuantityL > 0 || _eveningMilkQuantityL > 0) && _selectedCowId != null) || (_eggQuantity > 0)
-                          ? _logHarvest
-                          : null,
-                    ),
+                      const SizedBox(height: 16),
+
+                      WeatherWidget(ward: wardName),
+
+                      const SizedBox(height: 16),
+                      _buildStreakWidget(),
+
+                      const SizedBox(height: 16),
+                      _buildAlertsCarousel(),
+
+                      const SizedBox(height: 24),
+                      const Text(
+                        'Quick Log',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 12),
+                      
+                      _buildCowSelector(),
+
+                      const SizedBox(height: 16),
+
+                      _buildQuickLogCard(
+                        title: 'Morning Milk (L)',
+                        icon: Icons.water_drop,
+                        color: Colors.blue.shade100,
+                        quantity: _morningMilkQuantityL,
+                        onAdd: (val) => _addQuantity((v) => setState(() => _morningMilkQuantityL += v), val),
+                        onRemove: () {
+                          HapticFeedback.lightImpact();
+                          setState(
+                            () => _morningMilkQuantityL = _morningMilkQuantityL > 0
+                                ? _morningMilkQuantityL - 0.1
+                                : 0,
+                          );
+                        },
+                      ),
+
+                      const SizedBox(height: 16),
+                      _buildQuickLogCard(
+                        title: 'Afternoon Milk (L)',
+                        icon: Icons.water_drop,
+                        color: Colors.yellow.shade100,
+                        quantity: _afternoonMilkQuantityL,
+                        onAdd: (val) => _addQuantity((v) => setState(() => _afternoonMilkQuantityL += v), val),
+                        onRemove: () {
+                          HapticFeedback.lightImpact();
+                          setState(
+                            () => _afternoonMilkQuantityL = _afternoonMilkQuantityL > 0
+                                ? _afternoonMilkQuantityL - 0.1
+                                : 0,
+                          );
+                        },
+                      ),
+
+                      const SizedBox(height: 16),
+                      _buildQuickLogCard(
+                        title: 'Evening Milk (L)',
+                        icon: Icons.water_drop,
+                        color: Colors.orange.shade100,
+                        quantity: _eveningMilkQuantityL,
+                        onAdd: (val) => _addQuantity((v) => setState(() => _eveningMilkQuantityL += v), val),
+                        onRemove: () {
+                          HapticFeedback.lightImpact();
+                          setState(
+                            () => _eveningMilkQuantityL = _eveningMilkQuantityL > 0
+                                ? _eveningMilkQuantityL - 0.1
+                                : 0,
+                          );
+                        },
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      _buildEggLogCard(),
+
+                      const SizedBox(height: 32),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 56,
+                        child: ElevatedButton.icon(
+                          icon: const Icon(Icons.check),
+                          label: const Text(
+                            'Save Daily Log',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          onPressed: ((_morningMilkQuantityL > 0 || _afternoonMilkQuantityL > 0 || _eveningMilkQuantityL > 0) && _selectedCowId != null) || (_eggQuantity > 0)
+                              ? _logHarvest
+                              : null,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: ConfettiWidget(
+                    confettiController: _confettiController,
+                    blastDirectionality: BlastDirectionality.explosive,
+                    shouldLoop: false,
+                    colors: const [Colors.green, Colors.blue, Colors.pink, Colors.orange, Colors.purple],
+                  ),
+                ),
+              ],
             ),
           );
         },
@@ -393,11 +440,22 @@ class _HarvestHubScreenState extends State<HarvestHubScreen> {
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    IconButton(icon: const Icon(Icons.remove_circle_outline), onPressed: () => setState(() => _eggQuantity = _eggQuantity > 0 ? _eggQuantity - 1 : 0), color: AppTheme.textSecondary),
+                    IconButton(
+                      icon: const Icon(Icons.remove_circle_outline), 
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        setState(() => _eggQuantity = _eggQuantity > 0 ? _eggQuantity - 1 : 0);
+                      }, 
+                      color: AppTheme.textSecondary
+                    ),
                     Text('$_eggQuantity', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                    IconButton(icon: const Icon(Icons.add_circle_outline), onPressed: () => setState(() => _eggQuantity++), color: AppTheme.primary),
+                    IconButton(
+                      icon: const Icon(Icons.add_circle_outline), 
+                      onPressed: () => _addEggQuantity(1), 
+                      color: AppTheme.primary
+                    ),
                     const Spacer(),
-                    ActionChip(label: const Text('+5'), onPressed: () => setState(() => _eggQuantity += 5), backgroundColor: Colors.grey.shade100),
+                    ActionChip(label: const Text('+5'), onPressed: () => _addEggQuantity(5), backgroundColor: Colors.grey.shade100),
                   ],
                 ),
               ],

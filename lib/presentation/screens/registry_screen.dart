@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:timeline_tile/timeline_tile.dart';
 import '../bloc/asset_bloc.dart' as bloc;
 import '../../core/theme/app_theme.dart';
 import '../../domain/entities/asset_entity.dart';
@@ -244,24 +246,92 @@ class _RegistryScreenState extends State<RegistryScreen> with SingleTickerProvid
   }
 
   Widget _buildTimelineWidget(double progress) {
+    int currentStage = 0;
+    if (progress > 0.3) currentStage = 1;
+    if (progress > 0.6) currentStage = 2;
+    if (progress > 0.9) currentStage = 3;
+
     return Column(
       children: [
-        LinearProgressIndicator(
-          value: progress,
-          backgroundColor: Colors.grey.shade200,
-          color: AppTheme.primary,
-          minHeight: 12,
-          borderRadius: BorderRadius.circular(6),
+        _buildTimelineNode(
+          isFirst: true,
+          isLast: false,
+          isPast: currentStage >= 0,
+          title: 'Insemination',
+          subtitle: 'Day 0: Registration',
         ),
-        const SizedBox(height: 8),
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Insemination', style: TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
-            Text('Calving', style: TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
-          ],
+        _buildTimelineNode(
+          isFirst: false,
+          isLast: false,
+          isPast: currentStage >= 1,
+          title: 'Growth / Gestation',
+          subtitle: 'Day 30: Feed Transition',
+        ),
+        _buildTimelineNode(
+          isFirst: false,
+          isLast: false,
+          isPast: currentStage >= 2,
+          title: 'Pre-harvest / Dry period',
+          subtitle: 'Day 200: Final preparations',
+        ),
+        _buildTimelineNode(
+          isFirst: false,
+          isLast: true,
+          isPast: currentStage >= 3,
+          title: 'Calving',
+          subtitle: 'Expected yield / birth',
         ),
       ],
+    );
+  }
+
+  Widget _buildTimelineNode({
+    required bool isFirst,
+    required bool isLast,
+    required bool isPast,
+    required String title,
+    required String subtitle,
+  }) {
+    return SizedBox(
+      height: 70,
+      child: TimelineTile(
+        isFirst: isFirst,
+        isLast: isLast,
+        beforeLineStyle: LineStyle(
+          color: isPast ? AppTheme.primary : Colors.grey.shade300,
+          thickness: 3,
+        ),
+        indicatorStyle: IndicatorStyle(
+          width: 30,
+          color: isPast ? AppTheme.primary : Colors.grey.shade300,
+          iconStyle: IconStyle(
+            iconData: isPast ? Icons.check : Icons.circle,
+            color: isPast ? Colors.white : Colors.grey.shade400,
+          ),
+        ),
+        endChild: GestureDetector(
+          onTap: () {
+            HapticFeedback.selectionClick();
+          },
+          child: Container(
+            margin: const EdgeInsets.only(left: 16),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: isPast ? AppTheme.primary.withOpacity(0.1) : Colors.grey.shade50,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: isPast ? AppTheme.primary.withOpacity(0.3) : Colors.grey.shade200),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: isPast ? AppTheme.primary : AppTheme.textPrimary)),
+                Text(subtitle, style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 

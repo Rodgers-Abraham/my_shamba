@@ -9,6 +9,7 @@ import '../screens/workshop_screen.dart';
 import '../screens/profile_screen.dart';
 import '../screens/products_screen.dart';
 import '../screens/calendar_screen.dart';
+import '../screens/analytics_simulator_screen.dart';
 import '../../core/theme/app_theme.dart';
 
 class MainNavigationShell extends StatefulWidget {
@@ -170,6 +171,14 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
                 const Text('My Shamba Menu', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
               ],
             ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.analytics),
+            title: const Text('Simulators & Analytics'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (_) => const AnalyticsSimulatorScreen()));
+            },
           ),
           ListTile(
             leading: const Icon(Icons.agriculture),
