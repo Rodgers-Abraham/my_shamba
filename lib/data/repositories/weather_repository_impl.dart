@@ -18,17 +18,62 @@ class WeatherRepositoryImpl implements WeatherRepository {
     try {
       final response = await client.get(
         Uri.parse(
-            'https://api.open-meteo.com/v1/forecast?latitude=$lat&longitude=$long&current=temperature_2m,relative_humidity_2m,precipitation_probability,wind_speed_10m'),
+            'https://api.open-meteo.com/v1/forecast?latitude=$lat&longitude=$long&current=temperature_2m,relative_humidity_2m,precipitation_probability,wind_speed_10m,weather_code&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=7'),
       );
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final current = data['current'];
+        final hourlyData = data['hourly'];
+        final dailyData = data['daily'];
 
         final temp = (current['temperature_2m'] as num).toDouble();
         final humidity = (current['relative_humidity_2m'] as num).toInt();
         final rainProb = current['precipitation_probability'] ?? 0;
         final windSpeed = (current['wind_speed_10m'] as num?)?.toDouble() ?? 0.0;
+        final weatherCode = current['weather_code'] ?? 0;
+
+        List<HourlyForecast> hourly = [];
+        if (hourlyData != null) {
+          final times = hourlyData['time'] as List;
+          final temps = hourlyData['temperature_2m'] as List;
+          final codes = hourlyData['weather_code'] as List;
+          
+          // Get next 24 hours starting from current time
+          final now = DateTime.now();
+          int startIndex = 0;
+          for (int i = 0; i < times.length; i++) {
+             if (DateTime.parse(times[i]).isAfter(now)) {
+                 startIndex = i > 0 ? i - 1 : i;
+                 break;
+             }
+          }
+
+          for (int i = startIndex; i < startIndex + 24 && i < times.length; i++) {
+            hourly.add(HourlyForecast(
+              time: DateTime.parse(times[i]),
+              temperature: (temps[i] as num).toDouble(),
+              weatherCode: codes[i] as int,
+            ));
+          }
+        }
+
+        List<DailyForecast> daily = [];
+        if (dailyData != null) {
+          final dates = dailyData['time'] as List;
+          final maxTemps = dailyData['temperature_2m_max'] as List;
+          final minTemps = dailyData['temperature_2m_min'] as List;
+          final codes = dailyData['weather_code'] as List;
+
+          for (int i = 0; i < dates.length; i++) {
+            daily.add(DailyForecast(
+              date: DateTime.parse(dates[i]),
+              maxTemp: (maxTemps[i] as num).toDouble(),
+              minTemp: (minTemps[i] as num).toDouble(),
+              weatherCode: codes[i] as int,
+            ));
+          }
+        }
 
         String hint = "Conditions are stable.";
         if (windSpeed > 25.0) {
@@ -49,6 +94,9 @@ class WeatherRepositoryImpl implements WeatherRepository {
           humidity: humidity,
           windSpeed: windSpeed,
           actionHint: hint,
+          weatherCode: weatherCode as int,
+          hourlyForecast: hourly,
+          dailyForecast: daily,
         ));
       } else {
         return Left(ServerFailure('Failed to fetch weather data.'));
