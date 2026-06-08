@@ -53,8 +53,11 @@ class HarvestBloc extends Bloc<HarvestEvent, HarvestState> {
     });
 
     on<AddHarvest>((event, emit) async {
-      await repository.addHarvest(event.entry);
-      // Reload would follow
+      final result = await repository.addHarvest(event.entry);
+      result.fold(
+        (f) => emit(HarvestError(f.message)),
+        (_) => add(LoadHarvests(event.entry.farmId)),
+      );
     });
   }
 }

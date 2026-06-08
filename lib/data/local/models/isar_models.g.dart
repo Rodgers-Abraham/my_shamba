@@ -5238,33 +5238,43 @@ const HarvestLogIsarSchema = CollectionSchema(
   name: r'HarvestLogIsar',
   id: 7543198550761797320,
   properties: {
-    r'date': PropertySchema(
+    r'assetId': PropertySchema(
       id: 0,
+      name: r'assetId',
+      type: IsarType.string,
+    ),
+    r'assetName': PropertySchema(
+      id: 1,
+      name: r'assetName',
+      type: IsarType.string,
+    ),
+    r'date': PropertySchema(
+      id: 2,
       name: r'date',
       type: IsarType.dateTime,
     ),
     r'farmId': PropertySchema(
-      id: 1,
+      id: 3,
       name: r'farmId',
       type: IsarType.string,
     ),
     r'isSynced': PropertySchema(
-      id: 2,
+      id: 4,
       name: r'isSynced',
       type: IsarType.bool,
     ),
     r'quantity': PropertySchema(
-      id: 3,
+      id: 5,
       name: r'quantity',
       type: IsarType.double,
     ),
     r'syncId': PropertySchema(
-      id: 4,
+      id: 6,
       name: r'syncId',
       type: IsarType.string,
     ),
     r'type': PropertySchema(
-      id: 5,
+      id: 7,
       name: r'type',
       type: IsarType.string,
     )
@@ -5316,6 +5326,18 @@ int _harvestLogIsarEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  {
+    final value = object.assetId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.assetName;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.farmId.length * 3;
   bytesCount += 3 + object.syncId.length * 3;
   bytesCount += 3 + object.type.length * 3;
@@ -5328,12 +5350,14 @@ void _harvestLogIsarSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeDateTime(offsets[0], object.date);
-  writer.writeString(offsets[1], object.farmId);
-  writer.writeBool(offsets[2], object.isSynced);
-  writer.writeDouble(offsets[3], object.quantity);
-  writer.writeString(offsets[4], object.syncId);
-  writer.writeString(offsets[5], object.type);
+  writer.writeString(offsets[0], object.assetId);
+  writer.writeString(offsets[1], object.assetName);
+  writer.writeDateTime(offsets[2], object.date);
+  writer.writeString(offsets[3], object.farmId);
+  writer.writeBool(offsets[4], object.isSynced);
+  writer.writeDouble(offsets[5], object.quantity);
+  writer.writeString(offsets[6], object.syncId);
+  writer.writeString(offsets[7], object.type);
 }
 
 HarvestLogIsar _harvestLogIsarDeserialize(
@@ -5343,13 +5367,15 @@ HarvestLogIsar _harvestLogIsarDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = HarvestLogIsar();
-  object.date = reader.readDateTime(offsets[0]);
-  object.farmId = reader.readString(offsets[1]);
+  object.assetId = reader.readStringOrNull(offsets[0]);
+  object.assetName = reader.readStringOrNull(offsets[1]);
+  object.date = reader.readDateTime(offsets[2]);
+  object.farmId = reader.readString(offsets[3]);
   object.id = id;
-  object.isSynced = reader.readBool(offsets[2]);
-  object.quantity = reader.readDouble(offsets[3]);
-  object.syncId = reader.readString(offsets[4]);
-  object.type = reader.readString(offsets[5]);
+  object.isSynced = reader.readBool(offsets[4]);
+  object.quantity = reader.readDouble(offsets[5]);
+  object.syncId = reader.readString(offsets[6]);
+  object.type = reader.readString(offsets[7]);
   return object;
 }
 
@@ -5361,16 +5387,20 @@ P _harvestLogIsarDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 1:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 2:
-      return (reader.readBool(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 3:
-      return (reader.readDouble(offset)) as P;
-    case 4:
       return (reader.readString(offset)) as P;
+    case 4:
+      return (reader.readBool(offset)) as P;
     case 5:
+      return (reader.readDouble(offset)) as P;
+    case 6:
+      return (reader.readString(offset)) as P;
+    case 7:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -5618,6 +5648,314 @@ extension HarvestLogIsarQueryWhere
 
 extension HarvestLogIsarQueryFilter
     on QueryBuilder<HarvestLogIsar, HarvestLogIsar, QFilterCondition> {
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'assetId',
+      ));
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'assetId',
+      ));
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'assetId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetIdGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'assetId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetIdLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'assetId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetIdBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'assetId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'assetId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'assetId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'assetId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'assetId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'assetId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'assetId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetNameIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'assetName',
+      ));
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetNameIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'assetName',
+      ));
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetNameEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'assetName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetNameGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'assetName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetNameLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'assetName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetNameBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'assetName',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetNameStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'assetName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetNameEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'assetName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetNameContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'assetName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetNameMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'assetName',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetNameIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'assetName',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
+      assetNameIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'assetName',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterFilterCondition>
       dateEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
@@ -6222,6 +6560,32 @@ extension HarvestLogIsarQueryLinks
 
 extension HarvestLogIsarQuerySortBy
     on QueryBuilder<HarvestLogIsar, HarvestLogIsar, QSortBy> {
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterSortBy> sortByAssetId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'assetId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterSortBy>
+      sortByAssetIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'assetId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterSortBy> sortByAssetName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'assetName', Sort.asc);
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterSortBy>
+      sortByAssetNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'assetName', Sort.desc);
+    });
+  }
+
   QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterSortBy> sortByDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'date', Sort.asc);
@@ -6301,6 +6665,32 @@ extension HarvestLogIsarQuerySortBy
 
 extension HarvestLogIsarQuerySortThenBy
     on QueryBuilder<HarvestLogIsar, HarvestLogIsar, QSortThenBy> {
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterSortBy> thenByAssetId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'assetId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterSortBy>
+      thenByAssetIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'assetId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterSortBy> thenByAssetName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'assetName', Sort.asc);
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterSortBy>
+      thenByAssetNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'assetName', Sort.desc);
+    });
+  }
+
   QueryBuilder<HarvestLogIsar, HarvestLogIsar, QAfterSortBy> thenByDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'date', Sort.asc);
@@ -6392,6 +6782,20 @@ extension HarvestLogIsarQuerySortThenBy
 
 extension HarvestLogIsarQueryWhereDistinct
     on QueryBuilder<HarvestLogIsar, HarvestLogIsar, QDistinct> {
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QDistinct> distinctByAssetId(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'assetId', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, HarvestLogIsar, QDistinct> distinctByAssetName(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'assetName', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<HarvestLogIsar, HarvestLogIsar, QDistinct> distinctByDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'date');
@@ -6437,6 +6841,18 @@ extension HarvestLogIsarQueryProperty
   QueryBuilder<HarvestLogIsar, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, String?, QQueryOperations> assetIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'assetId');
+    });
+  }
+
+  QueryBuilder<HarvestLogIsar, String?, QQueryOperations> assetNameProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'assetName');
     });
   }
 

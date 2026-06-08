@@ -54,8 +54,11 @@ class AssetBloc extends Bloc<AssetEvent, AssetState> {
       ));
     });
     on<AddAsset>((event, emit) async {
-      await repository.addAsset(event.asset);
-      add(LoadAssets(event.asset.farmId));
+      final result = await repository.addAsset(event.asset);
+      result.fold(
+        (f) => emit(AssetError(f.message)),
+        (_) => add(LoadAssets(event.asset.farmId)),
+      );
     });
   }
 }

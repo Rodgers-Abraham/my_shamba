@@ -141,7 +141,7 @@ class _ProfilePicInitials extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           CircleAvatar(
-            backgroundColor: const Color(0xFFFF7643).withValues(alpha: 0.1),
+            backgroundColor: const Color(0xFFFF7643).withOpacity(0.1),
             child: Text(
               initials,
               style: const TextStyle(

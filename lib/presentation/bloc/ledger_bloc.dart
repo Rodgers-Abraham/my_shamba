@@ -73,5 +73,22 @@ class LedgerBloc extends Bloc<LedgerEvent, LedgerState> {
         (entries) => LedgerLoaded(entries),
       ));
     });
+
+    on<AddEntry>((event, emit) async {
+      final result = await repository.addEntry(LedgerEntryEntity(
+        id: '',
+        farmId: event.farmId,
+        amount: event.amount,
+        category: event.category,
+        description: event.description,
+        date: event.date,
+        associatedParty: event.associatedParty,
+      ));
+      
+      result.fold(
+        (f) => emit(LedgerError(f.message)),
+        (_) => add(LoadEntries(event.farmId)),
+      );
+    });
   }
 }

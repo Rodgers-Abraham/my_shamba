@@ -17,13 +17,18 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     });
 
     on<AddCalendarEntry>((event, emit) async {
-      await repository.addEntry(event.entry);
-      add(LoadCalendar(event.entry.farmId));
+      final result = await repository.addEntry(event.entry);
+      result.fold(
+        (f) => emit(CalendarError(f.message)),
+        (_) => add(LoadCalendar(event.entry.farmId)),
+      );
     });
 
     on<ToggleEntryCompletion>((event, emit) async {
-      await repository.updateCompletion(event.entryId, event.isCompleted);
-      // We don't have farmId here easily, so we might need a refresh logic
+      final result = await repository.updateCompletion(event.entryId, event.isCompleted);
+      if (result.isLeft()) {
+        emit(CalendarError(result.fold((f) => f.message, (_) => '')));
+      }
     });
   }
 }

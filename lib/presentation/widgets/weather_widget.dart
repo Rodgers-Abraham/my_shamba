@@ -97,7 +97,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                 });
               },
               style: SegmentedButton.styleFrom(
-                selectedBackgroundColor: AppTheme.primary.withValues(alpha: 0.2),
+                selectedBackgroundColor: AppTheme.primary.withOpacity(0.2),
                 selectedForegroundColor: AppTheme.primary,
               ),
             ),

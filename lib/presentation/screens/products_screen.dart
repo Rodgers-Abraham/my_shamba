@@ -43,43 +43,46 @@ class _ProductsScreenState extends State<ProductsScreen> {
             ],
           ),
         ),
-        body: BlocBuilder<SupplyBloc, SupplyState>(
-          builder: (context, state) {
-            if (state is SupplyLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (state is SupplyLoaded) {
-              final produce =
-                  state.supplies.where((s) => s.category == 'Produce').toList();
-              final inputs =
-                  state.supplies.where((s) => s.category == 'Input').toList();
-              return TabBarView(
-                children: [
-                  _buildListView(produce, Icons.grass, Colors.amber),
-                  _buildListView(inputs, Icons.science, Colors.blue),
-                ],
+        body: BlocListener<SupplyBloc, SupplyState>(
+          listener: (context, state) {
+            if (state is SupplyError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.message), backgroundColor: Colors.red),
               );
             }
-            return const Center(child: Text('No items found.'));
           },
+          child: BlocBuilder<SupplyBloc, SupplyState>(
+            builder: (context, state) {
+              if (state is SupplyLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (state is SupplyLoaded) {
+                final produce = state.supplies.where((s) => s.category == 'Produce').toList();
+                final inputs = state.supplies.where((s) => s.category == 'Input').toList();
+                return TabBarView(
+                  children: [
+                    _buildListView(produce, Icons.grass, Colors.amber),
+                    _buildListView(inputs, Icons.science, Colors.blue),
+                  ],
+                );
+              }
+              return const Center(child: Text('No items found.'));
+            },
+          ),
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: AppTheme.primary,
-          onPressed: () {
-            _showAddProductDialog(context);
-          },
+          onPressed: () => _showAddProductDialog(context),
           child: const Icon(Icons.add, color: Colors.white),
         ),
       ),
     );
   }
 
-  Widget _buildListView(
-      List<SupplyEntity> items, IconData icon, MaterialColor color) {
+  Widget _buildListView(List<SupplyEntity> items, IconData icon, MaterialColor color) {
     if (items.isEmpty) {
       return Center(
-        child: Text('No items registered.',
-            style: TextStyle(color: AppTheme.textSecondary)),
+        child: Text('No items registered.', style: TextStyle(color: AppTheme.textSecondary)),
       );
     }
     return ListView.builder(
@@ -94,10 +97,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
               backgroundColor: color.shade100,
               child: Icon(icon, color: color.shade800),
             ),
-            title: Text(item.name,
-                style: const TextStyle(fontWeight: FontWeight.bold)),
-            trailing: Text('${item.quantity} ${item.unit}',
-                style: const TextStyle(fontWeight: FontWeight.bold)),
+            title: Text(item.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+            trailing: Text('${item.quantity} ${item.unit}', style: const TextStyle(fontWeight: FontWeight.bold)),
           ),
         );
       },
@@ -107,8 +108,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
   void _showAddProductDialog(BuildContext context) {
     final authState = context.read<AuthBloc>().state;
     if (authState is! Authenticated) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (_) => const AuthScreen()));
+      Navigator.push(context, MaterialPageRoute(builder: (_) => const AuthScreen()));
       return;
     }
 
@@ -129,12 +129,10 @@ class _AddProductDialog extends StatefulWidget {
 
 class _AddProductDialogState extends State<_AddProductDialog> {
   final _qtyCtrl = TextEditingController();
-
-  String _selectedTab = 'Produce'; // 'Produce' or 'Input'
+  String _selectedTab = 'Produce';
   String? _selectedCategory;
   String? _selectedSubcategory;
   String? _selectedItem;
-
   List<dynamic> _parsedData = [];
   bool _isLoading = true;
 
@@ -150,27 +148,20 @@ class _AddProductDialogState extends State<_AddProductDialog> {
       setState(() {
         _parsedData = data;
         _isLoading = false;
-        _selectedCategory = 'Crops'; // Default for Produce
+        _selectedCategory = 'Crops';
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return const AlertDialog(
-          content: SizedBox(
-              height: 100, child: Center(child: CircularProgressIndicator())));
-    }
+    if (_isLoading) return const AlertDialog(content: SizedBox(height: 100, child: Center(child: CircularProgressIndicator())));
 
-    final categories =
-        _selectedTab == 'Produce' ? ['Crops'] : ['Agricultural Inputs'];
-    List<String> subcategories = InputsParser.getSubcategories(
-        _parsedData, _selectedCategory ?? categories.first);
+    final categories = _selectedTab == 'Produce' ? ['Crops'] : ['Agricultural Inputs'];
+    List<String> subcategories = InputsParser.getSubcategories(_parsedData, _selectedCategory ?? categories.first);
     List<String> items = [];
     if (_selectedSubcategory != null) {
-      items = InputsParser.getItems(_parsedData,
-          _selectedCategory ?? categories.first, _selectedSubcategory!);
+      items = InputsParser.getItems(_parsedData, _selectedCategory ?? categories.first, _selectedSubcategory!);
     }
 
     return AlertDialog(
@@ -180,20 +171,15 @@ class _AddProductDialogState extends State<_AddProductDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             DropdownButtonFormField<String>(
-              initialValue: _selectedTab,
+              value: _selectedTab,
               items: const [
-                DropdownMenuItem(
-                    value: 'Produce', child: Text('Produce (Grains/Cereals)')),
-                DropdownMenuItem(
-                    value: 'Input',
-                    child: Text('Farm Input (Fertilizer/Seed)')),
+                DropdownMenuItem(value: 'Produce', child: Text('Produce (Grains/Cereals)')),
+                DropdownMenuItem(value: 'Input', child: Text('Farm Input (Fertilizer/Seed)')),
               ],
               onChanged: (val) {
                 setState(() {
                   _selectedTab = val!;
-                  _selectedCategory = _selectedTab == 'Produce'
-                      ? 'Crops'
-                      : 'Agricultural Inputs';
+                  _selectedCategory = _selectedTab == 'Produce' ? 'Crops' : 'Agricultural Inputs';
                   _selectedSubcategory = null;
                   _selectedItem = null;
                 });
@@ -203,64 +189,34 @@ class _AddProductDialogState extends State<_AddProductDialog> {
             const SizedBox(height: 16),
             if (subcategories.isNotEmpty)
               DropdownButtonFormField<String>(
-                initialValue: _selectedSubcategory,
-                items: subcategories
-                    .map((c) => DropdownMenuItem(value: c, child: Text(c)))
-                    .toList(),
-                onChanged: (val) {
-                  setState(() {
-                    _selectedSubcategory = val;
-                    _selectedItem = null;
-                  });
-                },
+                value: _selectedSubcategory,
+                items: subcategories.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
+                onChanged: (val) => setState(() { _selectedSubcategory = val; _selectedItem = null; }),
                 decoration: const InputDecoration(labelText: 'Subcategory'),
                 isExpanded: true,
               ),
             const SizedBox(height: 16),
             if (items.isNotEmpty)
               DropdownButtonFormField<String>(
-                initialValue: _selectedItem,
-                items: items
-                    .map((c) => DropdownMenuItem(value: c, child: Text(c)))
-                    .toList(),
-                onChanged: (val) {
-                  setState(() => _selectedItem = val);
-                },
+                value: _selectedItem,
+                items: items.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
+                onChanged: (val) => setState(() => _selectedItem = val),
                 decoration: const InputDecoration(labelText: 'Item'),
                 isExpanded: true,
               ),
             const SizedBox(height: 16),
-            TextField(
-              controller: _qtyCtrl,
-              keyboardType: TextInputType.number,
-              decoration:
-                  const InputDecoration(labelText: 'Quantity (e.g. 50 Bags)'),
-            ),
+            TextField(controller: _qtyCtrl, keyboardType: TextInputType.number, decoration: const InputDecoration(labelText: 'Quantity')),
           ],
         ),
       ),
       actions: [
-        TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel')),
+        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
         ElevatedButton(
           onPressed: () {
             if (_selectedItem == null || _qtyCtrl.text.isEmpty) return;
-
             final qty = double.tryParse(_qtyCtrl.text) ?? 0.0;
-
-            final newSupply = SupplyEntity(
-              id: '',
-              farmId: widget.farmId,
-              name: _selectedItem!,
-              category: _selectedTab, // 'Produce' or 'Input'
-              quantity: qty,
-              unit: 'Units',
-            );
-
+            final newSupply = SupplyEntity(id: '', farmId: widget.farmId, name: _selectedItem!, category: _selectedTab, quantity: qty, unit: 'Units');
             context.read<SupplyBloc>().add(AddSupply(newSupply));
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Saved to Inventory!')));
             Navigator.pop(context);
           },
           child: const Text('Save'),

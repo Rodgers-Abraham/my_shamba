@@ -8,7 +8,6 @@ import '../../domain/entities/supply_entity.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_state.dart';
 import 'auth_screen.dart';
-
 import '../widgets/add_supply_dialog.dart';
 
 class WorkshopScreen extends StatefulWidget {
@@ -52,24 +51,33 @@ class _WorkshopScreenState extends State<WorkshopScreen> with SingleTickerProvid
           ],
         ),
       ),
-      body: BlocBuilder<SupplyBloc, SupplyState>(
-        builder: (context, state) {
-          if (state is SupplyLoading) return const Center(child: CircularProgressIndicator());
-          
-          if (state is SupplyLoaded) {
-            final durables = state.supplies.where((s) => s.category.toLowerCase() == 'tool' || s.category.toLowerCase() == 'durable').toList();
-            final consumables = state.supplies.where((s) => s.category.toLowerCase() == 'consumable').toList();
-
-            return TabBarView(
-              controller: _tabController,
-              children: [
-                _buildListView(durables, isConsumable: false),
-                _buildListView(consumables, isConsumable: true),
-              ],
+      body: BlocListener<SupplyBloc, SupplyState>(
+        listener: (context, state) {
+          if (state is SupplyError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message), backgroundColor: Colors.red),
             );
           }
-          return const Center(child: Text('No supplies found.'));
         },
+        child: BlocBuilder<SupplyBloc, SupplyState>(
+          builder: (context, state) {
+            if (state is SupplyLoading) return const Center(child: CircularProgressIndicator());
+            
+            if (state is SupplyLoaded) {
+              final durables = state.supplies.where((s) => s.category.toLowerCase() == 'tool' || s.category.toLowerCase() == 'durable').toList();
+              final consumables = state.supplies.where((s) => s.category.toLowerCase() == 'consumable').toList();
+
+              return TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildListView(durables, isConsumable: false),
+                  _buildListView(consumables, isConsumable: true),
+                ],
+              );
+            }
+            return const Center(child: Text('No supplies found.'));
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppTheme.primary,
@@ -111,7 +119,7 @@ class _WorkshopScreenState extends State<WorkshopScreen> with SingleTickerProvid
       itemCount: supplies.length,
       itemBuilder: (context, index) {
         final supply = supplies[index];
-        final isLowInventory = isConsumable && supply.quantity < 5.0; // Mock threshold
+        final isLowInventory = isConsumable && supply.quantity < 5.0;
 
         return Card(
           margin: const EdgeInsets.only(bottom: 12),
@@ -127,13 +135,13 @@ class _WorkshopScreenState extends State<WorkshopScreen> with SingleTickerProvid
               children: [
                 Text('Type: ${supply.category}'),
                 if (isLowInventory)
-                  const Text('⚠️ Low Inventory Alert (High Burn Rate)', style: TextStyle(color: Colors.red, fontSize: 12, fontWeight: FontWeight.bold)),
+                  const Text('⚠️ Low Inventory Alert', style: TextStyle(color: Colors.red, fontSize: 12, fontWeight: FontWeight.bold)),
               ],
             ),
             trailing: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: isLowInventory ? Colors.red.withValues(alpha: 0.1) : AppTheme.primary.withValues(alpha: 0.1),
+                color: isLowInventory ? Colors.red.withOpacity(0.1) : AppTheme.primary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(

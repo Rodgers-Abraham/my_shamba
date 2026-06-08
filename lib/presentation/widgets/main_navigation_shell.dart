@@ -27,7 +27,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
   final GlobalKey _registryKey = GlobalKey();
   final GlobalKey _ledgerKey = GlobalKey();
 
-  late final List<Widget> _screens;
+  late List<Widget> _screens;
 
   @override
   void initState() {
@@ -36,9 +36,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
       HarvestHubScreen(farmId: widget.farmId),
       CalendarScreen(farmId: widget.farmId),
       RegistryScreen(farmId: widget.farmId),
-      ProductsScreen(farmId: widget.farmId),
       AuthGuard(child: LedgerScreen(farmId: widget.farmId)),
-      WorkshopScreen(farmId: widget.farmId),
       const ProfileScreen(),
     ];
     _checkFirstTimeTour();
@@ -136,18 +134,8 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        if (constraints.maxWidth > 800) {
-          return _buildDesktopLayout();
-        }
-        return _buildMobileLayout();
-      },
-    );
-  }
-
-  Widget _buildMobileLayout() {
     return Scaffold(
+      drawer: _buildDrawer(),
       body: IndexedStack(index: _currentIndex, children: _screens),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -159,35 +147,53 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
           BottomNavigationBarItem(icon: Container(key: _hubKey, child: const Icon(Icons.home)), label: 'Hub'),
           const BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: 'Calendar'),
           BottomNavigationBarItem(icon: Container(key: _registryKey, child: const Icon(Icons.pets)), label: 'Registry'),
-          const BottomNavigationBarItem(icon: Icon(Icons.agriculture), label: 'Products'),
-          BottomNavigationBarItem(icon: Container(key: _ledgerKey, child: const Icon(Icons.account_balance_wallet)), label: 'Ledger'),
-          const BottomNavigationBarItem(icon: Icon(Icons.build), label: 'Workshop'),
+          BottomNavigationBarItem(icon: Container(key: _ledgerKey, child: const Icon(Icons.account_balance_wallet)), label: 'Finance'),
           const BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
     );
   }
 
-  Widget _buildDesktopLayout() {
-    return Scaffold(
-      body: Row(
+  Widget _buildDrawer() {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
         children: [
-          NavigationRail(
-            selectedIndex: _currentIndex,
-            onDestinationSelected: (index) => setState(() => _currentIndex = index),
-            destinations: [
-              NavigationRailDestination(icon: Container(key: _hubKey, child: const Icon(Icons.home)), label: const Text('Hub')),
-              const NavigationRailDestination(icon: Icon(Icons.calendar_month), label: Text('Calendar')),
-              NavigationRailDestination(icon: Container(key: _registryKey, child: const Icon(Icons.pets)), label: const Text('Registry')),
-              const NavigationRailDestination(icon: Icon(Icons.agriculture), label: Text('Products')),
-              NavigationRailDestination(icon: Container(key: _ledgerKey, child: const Icon(Icons.account_balance_wallet)), label: const Text('Ledger')),
-              const NavigationRailDestination(icon: Icon(Icons.build), label: Text('Workshop')),
-              const NavigationRailDestination(icon: Icon(Icons.person), label: Text('Profile')),
-            ],
-            extended: true,
+          DrawerHeader(
+            decoration: const BoxDecoration(color: AppTheme.primary),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Image.asset('assets/logo.png', height: 60, width: 60),
+                const SizedBox(height: 12),
+                const Text('My Shamba Menu', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+              ],
+            ),
           ),
-          const VerticalDivider(thickness: 1, width: 1),
-          Expanded(child: IndexedStack(index: _currentIndex, children: _screens)),
+          ListTile(
+            leading: const Icon(Icons.agriculture),
+            title: const Text('Farm Products'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (_) => ProductsScreen(farmId: widget.farmId)));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.build),
+            title: const Text('Workshop & Tools'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (_) => WorkshopScreen(farmId: widget.farmId)));
+            },
+          ),
+          const Divider(),
+          const AboutListTile(
+            icon: Icon(Icons.info_outline),
+            applicationName: 'My Shamba',
+            applicationVersion: '1.0.0',
+            aboutBoxChildren: [Text('Empowering farmers with precision data.')],
+          ),
         ],
       ),
     );

@@ -23,6 +23,8 @@ class HarvestRepositoryImpl implements HarvestRepository {
         return Right(localHarvests.map((e) => HarvestEntry(
           id: e.syncId,
           farmId: e.farmId,
+          assetId: e.assetId,
+          assetName: e.assetName,
           quantity: e.quantity,
           type: e.type,
           date: e.date,
@@ -34,13 +36,15 @@ class HarvestRepositoryImpl implements HarvestRepository {
           .get();
 
       final list = snapshot.docs.map((doc) {
-        final model = HarvestModel.fromJson(doc.data());
+        final data = doc.data();
         return HarvestEntry(
-          id: model.entryId,
-          farmId: model.farmId,
-          quantity: model.quantity,
-          type: model.type,
-          date: model.date,
+          id: doc.id,
+          farmId: farmId,
+          assetId: data['assetId'],
+          assetName: data['assetName'],
+          quantity: (data['quantity'] as num).toDouble(),
+          type: data['type'],
+          date: (data['date'] as Timestamp).toDate(),
         );
       }).toList();
 
@@ -50,6 +54,8 @@ class HarvestRepositoryImpl implements HarvestRepository {
           final local = HarvestLogIsar()
             ..syncId = h.id
             ..farmId = h.farmId
+            ..assetId = h.assetId
+            ..assetName = h.assetName
             ..quantity = h.quantity
             ..type = h.type
             ..date = h.date
@@ -73,6 +79,8 @@ class HarvestRepositoryImpl implements HarvestRepository {
       final local = HarvestLogIsar()
         ..syncId = syncId
         ..farmId = entry.farmId
+        ..assetId = entry.assetId
+        ..assetName = entry.assetName
         ..quantity = entry.quantity
         ..type = entry.type
         ..date = entry.date
@@ -82,15 +90,15 @@ class HarvestRepositoryImpl implements HarvestRepository {
         await _isar.harvestLogIsars.put(local);
       });
 
-      final harvestModel = HarvestModel(
-        entryId: syncId,
-        farmId: entry.farmId,
-        quantity: entry.quantity,
-        type: entry.type,
-        date: entry.date,
-      );
-      
-      await _firestore.collection('harvests').doc(syncId).set(harvestModel.toJson());
+      // Remote write
+      await _firestore.collection('harvests').doc(syncId).set({
+        'farmId': entry.farmId,
+        'assetId': entry.assetId,
+        'assetName': entry.assetName,
+        'quantity': entry.quantity,
+        'type': entry.type,
+        'date': entry.date,
+      });
       
       return const Right(null);
     } catch (e) {

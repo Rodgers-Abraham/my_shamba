@@ -34,81 +34,90 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return Scaffold(
       backgroundColor: AppTheme.background,
       appBar: AppBar(title: const Text('Farm Calendar')),
-      body: BlocBuilder<CalendarBloc, CalendarState>(
-        builder: (context, state) {
-          if (state is CalendarLoading) return const Center(child: CircularProgressIndicator());
-          
-          List<CalendarEntryEntity> entries = [];
-          if (state is CalendarLoaded) {
-            entries = state.entries;
+      body: BlocListener<CalendarBloc, CalendarState>(
+        listener: (context, state) {
+          if (state is CalendarError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message), backgroundColor: Colors.red),
+            );
           }
-
-          final selectedDayEntries = entries.where((e) => isSameDay(e.date, _selectedDay)).toList();
-
-          return Column(
-            children: [
-              Card(
-                margin: const EdgeInsets.all(16),
-                child: TableCalendar(
-                  firstDay: DateTime.utc(2020, 1, 1),
-                  lastDay: DateTime.utc(2030, 12, 31),
-                  focusedDay: _focusedDay,
-                  selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-                  onDaySelected: (selectedDay, focusedDay) {
-                    setState(() {
-                      _selectedDay = selectedDay;
-                      _focusedDay = focusedDay;
-                    });
-                  },
-                  calendarStyle: const CalendarStyle(
-                    selectedDecoration: BoxDecoration(color: AppTheme.primary, shape: BoxShape.circle),
-                    todayDecoration: BoxDecoration(color: AppTheme.accent, shape: BoxShape.circle),
-                  ),
-                  eventLoader: (day) {
-                    return entries.where((e) => isSameDay(e.date, day)).toList();
-                  },
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: [
-                    Text('Activities & Due Dates', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 8),
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: selectedDayEntries.length,
-                  itemBuilder: (context, index) {
-                    final entry = selectedDayEntries[index];
-                    return Card(
-                      margin: const EdgeInsets.only(bottom: 8),
-                      child: ListTile(
-                        leading: Icon(
-                          entry.isDueDate ? Icons.notification_important : Icons.event_note,
-                          color: entry.isDueDate ? Colors.red : AppTheme.primary,
-                        ),
-                        title: Text(entry.title, style: TextStyle(
-                          decoration: entry.isCompleted ? TextDecoration.lineThrough : null,
-                        )),
-                        subtitle: Text(entry.description),
-                        trailing: Checkbox(
-                          value: entry.isCompleted,
-                          onChanged: (val) {
-                            context.read<CalendarBloc>().add(ToggleEntryCompletion(entry.id, val!));
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          );
         },
+        child: BlocBuilder<CalendarBloc, CalendarState>(
+          builder: (context, state) {
+            if (state is CalendarLoading) return const Center(child: CircularProgressIndicator());
+            
+            List<CalendarEntryEntity> entries = [];
+            if (state is CalendarLoaded) {
+              entries = state.entries;
+            }
+
+            final selectedDayEntries = entries.where((e) => isSameDay(e.date, _selectedDay)).toList();
+
+            return Column(
+              children: [
+                Card(
+                  margin: const EdgeInsets.all(16),
+                  child: TableCalendar(
+                    firstDay: DateTime.utc(2020, 1, 1),
+                    lastDay: DateTime.utc(2030, 12, 31),
+                    focusedDay: _focusedDay,
+                    selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                    onDaySelected: (selectedDay, focusedDay) {
+                      setState(() {
+                        _selectedDay = selectedDay;
+                        _focusedDay = focusedDay;
+                      });
+                    },
+                    calendarStyle: const CalendarStyle(
+                      selectedDecoration: BoxDecoration(color: AppTheme.primary, shape: BoxShape.circle),
+                      todayDecoration: BoxDecoration(color: AppTheme.accent, shape: BoxShape.circle),
+                    ),
+                    eventLoader: (day) {
+                      return entries.where((e) => isSameDay(e.date, day)).toList();
+                    },
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      Text('Activities & Due Dates', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Expanded(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    itemCount: selectedDayEntries.length,
+                    itemBuilder: (context, index) {
+                      final entry = selectedDayEntries[index];
+                      return Card(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        child: ListTile(
+                          leading: Icon(
+                            entry.isDueDate ? Icons.notification_important : Icons.event_note,
+                            color: entry.isDueDate ? Colors.red : AppTheme.primary,
+                          ),
+                          title: Text(entry.title, style: TextStyle(
+                            decoration: entry.isCompleted ? TextDecoration.lineThrough : null,
+                          )),
+                          subtitle: Text(entry.description),
+                          trailing: Checkbox(
+                            value: entry.isCompleted,
+                            onChanged: (val) {
+                              context.read<CalendarBloc>().add(ToggleEntryCompletion(entry.id, val!));
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppTheme.primary,
@@ -160,7 +169,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   isDueDate: isDueDate,
                 );
                 context.read<CalendarBloc>().add(AddCalendarEntry(newEntry));
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Activity Saved! Streak 🔥'), backgroundColor: AppTheme.primary));
                 Navigator.pop(context);
               },
               child: const Text('Save'),

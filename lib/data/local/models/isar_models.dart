@@ -78,6 +78,9 @@ class HarvestLogIsar {
   @Index()
   late String farmId;
 
+  String? assetId;
+  String? assetName;
+
   late double quantity;
   late String type;
   late DateTime date;

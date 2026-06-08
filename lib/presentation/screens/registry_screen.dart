@@ -49,31 +49,38 @@ class _RegistryScreenState extends State<RegistryScreen> with SingleTickerProvid
           ],
         ),
       ),
-      body: BlocBuilder<bloc.AssetBloc, bloc.AssetState>(
-        builder: (context, state) {
-          if (state is bloc.AssetLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (state is bloc.AssetLoaded) {
-            final livestock = state.assets.where((a) => a.type == 'livestock').toList();
-            final crops = state.assets.where((a) => a.type == 'crop').toList();
-
-            return TabBarView(
-              controller: _tabController,
-              children: [
-                _buildListView(livestock, isLivestock: true),
-                _buildListView(crops, isLivestock: false),
-              ],
+      body: BlocListener<bloc.AssetBloc, bloc.AssetState>(
+        listener: (context, state) {
+          if (state is bloc.AssetError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message), backgroundColor: Colors.red),
             );
           }
-          return const Center(child: Text('No assets registered.'));
         },
+        child: BlocBuilder<bloc.AssetBloc, bloc.AssetState>(
+          builder: (context, state) {
+            if (state is bloc.AssetLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (state is bloc.AssetLoaded) {
+              final livestock = state.assets.where((a) => a.type == 'livestock').toList();
+              final crops = state.assets.where((a) => a.type == 'crop').toList();
+
+              return TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildListView(livestock, isLivestock: true),
+                  _buildListView(crops, isLivestock: false),
+                ],
+              );
+            }
+            return const Center(child: Text('No assets registered.'));
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppTheme.primary,
-        onPressed: () {
-          _showAddAssetDialog(context);
-        },
+        onPressed: () => _showAddAssetDialog(context),
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );
@@ -131,9 +138,7 @@ class _RegistryScreenState extends State<RegistryScreen> with SingleTickerProvid
                 ],
               ],
             ),
-            onTap: () {
-              _showDossier(context, asset);
-            },
+            onTap: () => _showDossier(context, asset),
           ),
         );
       },
@@ -148,7 +153,7 @@ class _RegistryScreenState extends State<RegistryScreen> with SingleTickerProvid
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
+        color: color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: color),
       ),
@@ -229,7 +234,7 @@ class _RegistryScreenState extends State<RegistryScreen> with SingleTickerProvid
   Widget _buildMilestoneChip(String label, bool isDone) {
     return Chip(
       label: Text(label),
-      backgroundColor: isDone ? AppTheme.primary.withValues(alpha: 0.1) : Colors.grey.shade100,
+      backgroundColor: isDone ? AppTheme.primary.withOpacity(0.1) : Colors.grey.shade100,
       labelStyle: TextStyle(
         color: isDone ? AppTheme.primary : AppTheme.textSecondary,
         fontWeight: isDone ? FontWeight.bold : FontWeight.normal,
