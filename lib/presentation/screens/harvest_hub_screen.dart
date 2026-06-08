@@ -11,7 +11,6 @@ import '../bloc/auth_state.dart';
 import '../bloc/harvest_bloc.dart';
 import '../bloc/asset_bloc.dart';
 import '../../domain/entities/harvest_entry.dart';
-import '../../domain/entities/asset_entity.dart';
 import 'auth_screen.dart';
 
 class HarvestHubScreen extends StatefulWidget {
@@ -295,7 +294,7 @@ class _HarvestHubScreenState extends State<HarvestHubScreen> {
           if (cows.isEmpty) return const Text('No cows found. Add one in Registry.', style: TextStyle(color: Colors.red, fontSize: 12));
           
           return DropdownButtonFormField<String>(
-            value: _selectedCowId,
+            initialValue: _selectedCowId,
             hint: const Text('Select Cow to Log Milk'),
             items: cows.map((c) => DropdownMenuItem(value: c.id, child: Text(c.name))).toList(),
             onChanged: (val) {
@@ -342,7 +341,7 @@ class _HarvestHubScreenState extends State<HarvestHubScreen> {
           ),
           Container(
             padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(color: AppTheme.primary.withOpacity(0.1), shape: BoxShape.circle),
+            decoration: BoxDecoration(color: AppTheme.primary.withValues(alpha: 0.1), shape: BoxShape.circle),
             child: const Icon(Icons.trending_up, color: AppTheme.primary),
           ),
         ],
@@ -370,9 +369,9 @@ class _HarvestHubScreenState extends State<HarvestHubScreen> {
       padding: const EdgeInsets.all(16),
       width: 280,
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.5)),
+        border: Border.all(color: color.withValues(alpha: 0.5)),
       ),
       child: Center(
         child: Text(message, style: TextStyle(color: color, fontWeight: FontWeight.bold), maxLines: 2, overflow: TextOverflow.ellipsis),

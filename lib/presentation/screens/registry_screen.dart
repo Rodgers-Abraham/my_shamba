@@ -155,7 +155,7 @@ class _RegistryScreenState extends State<RegistryScreen> with SingleTickerProvid
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: color),
       ),
@@ -236,7 +236,7 @@ class _RegistryScreenState extends State<RegistryScreen> with SingleTickerProvid
   Widget _buildMilestoneChip(String label, bool isDone) {
     return Chip(
       label: Text(label),
-      backgroundColor: isDone ? AppTheme.primary.withOpacity(0.1) : Colors.grey.shade100,
+      backgroundColor: isDone ? AppTheme.primary.withValues(alpha: 0.1) : Colors.grey.shade100,
       labelStyle: TextStyle(
         color: isDone ? AppTheme.primary : AppTheme.textSecondary,
         fontWeight: isDone ? FontWeight.bold : FontWeight.normal,
@@ -317,9 +317,9 @@ class _RegistryScreenState extends State<RegistryScreen> with SingleTickerProvid
             margin: const EdgeInsets.only(left: 16),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: isPast ? AppTheme.primary.withOpacity(0.1) : Colors.grey.shade50,
+              color: isPast ? AppTheme.primary.withValues(alpha: 0.1) : Colors.grey.shade50,
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: isPast ? AppTheme.primary.withOpacity(0.3) : Colors.grey.shade200),
+              border: Border.all(color: isPast ? AppTheme.primary.withValues(alpha: 0.3) : Colors.grey.shade200),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

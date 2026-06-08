@@ -1,0 +1,286 @@
+{
+  "livestock": {
+    "cattle": {
+      "dairy": {
+        "metrics": { "gestation_days": 283, "estrus_cycle_days": 21, "weaning_age_days": 90, "breeding_maturity_months": 15, "dry_off_days_before_calving": 60, "average_daily_water_liters": 60, "target_daily_milk_liters": 25 },
+        "diary_schedule": [
+          { "event": "Colostrum Feeding", "trigger": "birth", "offset_days": 0 },
+          { "event": "Dehorning / Disbudding", "trigger": "birth", "offset_days": 14 },
+          { "event": "Weaning Transition", "trigger": "birth", "offset_days": 90 },
+          { "event": "Routine Deworming", "trigger": "recurring", "interval_days": 90 },
+          { "event": "FMD Vaccination", "trigger": "recurring", "interval_days": 180 },
+          { "event": "Dry Off Period Alert", "trigger": "insemination", "offset_days": 223 },
+          { "event": "Projected Calving Window", "trigger": "insemination", "offset_days": 283 }
+        ],
+        "varieties": ["Holstein Friesian", "Ayrshire", "Guernsey", "Jersey"]
+      },
+      "beef": {
+        "metrics": { "gestation_days": 283, "weaning_age_days": 210, "breeding_maturity_months": 18, "average_daily_water_liters": 45, "target_market_weight_kg": 400 },
+        "diary_schedule": [
+          { "event": "Castration / Branding", "trigger": "birth", "offset_days": 60 },
+          { "event": "Weaning", "trigger": "birth", "offset_days": 210 },
+          { "event": "Tick-Borne Disease Screening", "trigger": "recurring", "interval_days": 30 }
+        ],
+        "varieties": ["Kenyan Boran", "Orma Boran", "Somali Boran", "Charolais", "Hereford", "Aberdeen Angus"]
+      },
+      "dual_purpose": {
+        "metrics": { "gestation_days": 283, "weaning_age_days": 120, "breeding_maturity_months": 16, "average_daily_water_liters": 50, "target_daily_milk_liters": 12 },
+        "diary_schedule": [
+          { "event": "Weaning", "trigger": "birth", "offset_days": 120 },
+          { "event": "Anthrax & Blackquarter Vaccine", "trigger": "recurring", "interval_days": 365 }
+        ],
+        "varieties": ["Sahiwal", "Simmental", "Flecvieh", "Brown Swiss"]
+      },
+      "indigenous_zebu": {
+        "metrics": { "gestation_days": 283, "weaning_age_days": 240, "breeding_maturity_months": 24, "average_daily_water_liters": 30, "target_daily_milk_liters": 3 },
+        "diary_schedule": [
+          { "event": "Ecf Immunization", "trigger": "birth", "offset_days": 30 }
+        ],
+        "varieties": ["Maasai Zebu", "Nandi Zebu", "Turkana Zebu", "Coastal Zebu"]
+      }
+    },
+    "small_ruminants": {
+      "dairy_goats": {
+        "metrics": { "gestation_days": 150, "estrus_cycle_days": 21, "weaning_age_days": 60, "breeding_maturity_months": 8, "dry_off_days_before_kidding": 45, "average_daily_water_liters": 5, "target_daily_milk_liters": 3 },
+        "diary_schedule": [
+          { "event": "Hoof Trimming", "trigger": "recurring", "interval_days": 60 },
+          { "event": "Enterotoxemia Vaccine", "trigger": "recurring", "interval_days": 180 },
+          { "event": "Dry Off Alert", "trigger": "insemination", "offset_days": 105 },
+          { "event": "Projected Kidding Window", "trigger": "insemination", "offset_days": 150 }
+        ],
+        "varieties": ["Toggenburg", "British Alpine", "Saanen", "Kenya Alpine"]
+      },
+      "meat_goats": {
+        "metrics": { "gestation_days": 150, "weaning_age_days": 90, "breeding_maturity_months": 9, "average_daily_water_liters": 4, "target_market_weight_kg": 35 },
+        "diary_schedule": [
+          { "event": "Weaning", "trigger": "birth", "offset_days": 90 },
+          { "event": "PPR Vaccination", "trigger": "recurring", "interval_days": 365 },
+          { "event": "Worm Burden Assessment", "trigger": "recurring", "interval_days": 90 }
+        ],
+        "varieties": ["Galla (Borana Goat)", "Small East African Goat", "Boer"]
+      },
+      "meat_sheep": {
+        "metrics": { "gestation_days": 152, "weaning_age_days": 90, "breeding_maturity_months": 8, "average_daily_water_liters": 4, "target_market_weight_kg": 40 },
+        "diary_schedule": [
+          { "event": "Tail Docking", "trigger": "birth", "offset_days": 14 },
+          { "event": "Weaning", "trigger": "birth", "offset_days": 90 },
+          { "event": "Bluetongue Vaccination", "trigger": "recurring", "interval_days": 365 }
+        ],
+        "varieties": ["Dorper", "Red Maasai", "Blackhead Persian"]
+      },
+      "wool_sheep": {
+        "metrics": { "gestation_days": 152, "weaning_age_days": 100, "breeding_maturity_months": 10, "average_daily_water_liters": 5, "target_annual_fleece_kg": 5 },
+        "diary_schedule": [
+          { "event": "Annual Shearing", "trigger": "recurring", "interval_days": 365 },
+          { "event": "Pest Dipping / Spraying", "trigger": "recurring", "interval_days": 30 }
+        ],
+        "varieties": ["Merino", "Corriedale", "Hampshire Down"]
+      }
+    },
+    "poultry": {
+      "commercial_chicken": {
+        "metrics": { "incubation_days": 21, "brooding_period_days": 28, "point_of_lay_weeks": 18, "peak_production_weeks": 30, "economic_cull_weeks": 72, "daily_feed_grams_per_bird": 115 },
+        "diary_schedule": [
+          { "event": "Marek's Disease Vaccine", "trigger": "birth", "offset_days": 0 },
+          { "event": "Newcastle Disease (1st)", "trigger": "birth", "offset_days": 7 },
+          { "event": "Gumboro Disease (1st)", "trigger": "birth", "offset_days": 14 },
+          { "event": "Gumboro Booster", "trigger": "birth", "offset_days": 24 },
+          { "event": "Fowl Pox Vaccine", "trigger": "birth", "offset_days": 56 },
+          { "event": "Move to Laying House", "trigger": "birth", "offset_days": 112 }
+        ],
+        "varieties": ["Cobb 500 (Broiler)", "Ross 308 (Broiler)", "Hy-Line (Layer)", "Isa Brown (Layer)", "Shaver Black"]
+      },
+      "improved_kienyeji": {
+        "metrics": { "incubation_days": 21, "brooding_period_days": 21, "point_of_lay_weeks": 20, "peak_production_weeks": 34, "economic_cull_weeks": 90, "daily_feed_grams_per_bird": 100 },
+        "diary_schedule": [
+          { "event": "Newcastle Vaccination", "trigger": "recurring", "interval_days": 90 },
+          { "event": "Fowl Typhoid Vaccine", "trigger": "birth", "offset_days": 42 }
+        ],
+        "varieties": ["KALRO Improved Kienyeji", "Kuroiler", "Rainbow Rooster", "Kenbro"]
+      },
+      "indigenous_chicken": {
+        "metrics": { "incubation_days": 21, "brooding_period_days": 0, "point_of_lay_weeks": 24, "economic_cull_weeks": 120, "daily_feed_grams_per_bird": 80 },
+        "diary_schedule": [
+          { "event": "Ectoparasite Dusting", "trigger": "recurring", "interval_days": 60 }
+        ],
+        "varieties": ["Traditional Kienyeji (Sitatunga, Naked Neck, Frizzle)"]
+      },
+      "alternative_poultry": {
+        "metrics": { "turkey_incubation_days": 28, "duck_incubation_days": 28, "quail_point_of_lay_weeks": 6 },
+        "diary_schedule": [
+          { "event": "Deworming Cycle", "trigger": "recurring", "interval_days": 90 }
+        ],
+        "varieties": ["Broad Breasted Bronze Turkey", "Pekin Duck", "Muscovy Duck", "Coturnix Quail", "Guinea Fowl"]
+      }
+    },
+    "camelids_and_equines": {
+      "camels": {
+        "metrics": { "gestation_days": 390, "weaning_age_days": 365, "breeding_maturity_months": 36, "average_daily_water_liters": 90, "target_daily_milk_liters": 6 },
+        "diary_schedule": [
+          { "event": "Trypanosomiasis Treatment", "trigger": "recurring", "interval_days": 120 },
+          { "event": "Weaning", "trigger": "birth", "offset_days": 365 }
+        ],
+        "varieties": ["Somali Camel Breed", "Rendille/Marsabit Camel Breed", "Turkana Camel Breed", "Gabbra Camel Breed"]
+      },
+      "donkeys": {
+        "metrics": { "gestation_days": 365, "breeding_maturity_months": 24, "average_daily_water_liters": 20, "max_working_hours_per_day": 6 },
+        "diary_schedule": [
+          { "event": "Tetanus Toxoid Vaccine", "trigger": "recurring", "interval_days": 365 },
+          { "event": "Harness Wound Check", "trigger": "recurring", "interval_days": 7 }
+        ],
+        "varieties": ["East African Common Donkey", "Somali Donkey"]
+      }
+    },
+    "pigs_and_rabbits": {
+      "pigs": {
+        "metrics": { "gestation_days": 114, "estrus_cycle_days": 21, "weaning_age_days": 42, "breeding_maturity_months": 8, "average_daily_water_liters": 15, "target_market_weight_kg": 90 },
+        "diary_schedule": [
+          { "event": "Iron Injection", "trigger": "birth", "offset_days": 3 },
+          { "event": "Tail Docking / Needle Teeth Clipping", "trigger": "birth", "offset_days": 3 },
+          { "event": "Weaning", "trigger": "birth", "offset_days": 42 },
+          { "event": "Erysipelas Vaccination", "trigger": "recurring", "interval_days": 180 }
+        ],
+        "varieties": ["Large White", "Landrace", "Duroc", "Hampshire", "Berkshire"]
+      },
+      "rabbits": {
+        "metrics": { "gestation_days": 31, "weaning_age_days": 42, "breeding_maturity_months": 6, "average_daily_water_liters": 0.5, "target_market_weight_kg": 3 },
+        "diary_schedule": [
+          { "event": "Nest Box Insertion", "trigger": "insemination", "offset_days": 27 },
+          { "event": "Weaning", "trigger": "birth", "offset_days": 42 },
+          { "event": "Coccidiosis Preventive Treatment", "trigger": "recurring", "interval_days": 60 }
+        ],
+        "varieties": ["New Zealand White", "California White", "Flemish Giant", "Chinchilla", "Kenya Bloat-Resistant Crosses"]
+      }
+    },
+    "apiculture_and_aquaculture": {
+      "honey_bees": {
+        "metrics": { "colonization_period_days": 30, "harvest_cycle_months": 4, "optimal_hive_type": "Langstroth / KTBH" },
+        "diary_schedule": [
+          { "event": "Hive Inspection & Cleaning", "trigger": "recurring", "interval_days": 14 },
+          { "event": "Absconding Preventive Check", "trigger": "recurring", "interval_days": 30 },
+          { "event": "Honey Harvesting Window", "trigger": "recurring", "interval_days": 120 }
+        ],
+        "varieties": ["Apis mellifera scutellata", "Apis mellifera litorea", "Apis mellifera monticola"]
+      },
+      "fish": {
+        "metrics": { "fingerling_stocking_weight_g": 5, "harvest_maturity_months": 6, "optimal_water_temp_celsius": 26, "daily_feed_percentage_body_weight": 3 },
+        "diary_schedule": [
+          { "event": "Water Quality & pH Testing", "trigger": "recurring", "interval_days": 7 },
+          { "event": "Sampling & Feed Adjustment", "trigger": "recurring", "interval_days": 30 },
+          { "event": "Complete Pond Harvesting", "trigger": "stocking", "offset_days": 180 }
+        ],
+        "varieties": ["Nile Tilapia (Oreochromis niloticus)", "African Catfish (Clarias gariepinus)", "Rainbow Trout"]
+      },
+      "insect_farming": {
+        "metrics": { "egg_to_larva_days": 4, "larval_harvest_day": 14, "prepupal_stage_day": 18 },
+        "diary_schedule": [
+          { "event": "Substrate Replenishment", "trigger": "recurring", "interval_days": 3 },
+          { "event": "Larval Sieving & Harvesting", "trigger": "egg_hatch", "offset_days": 14 }
+        ],
+        "varieties": ["Black Soldier Fly (BSF)", "House Cricket", "Silkworms"]
+      }
+    }
+  },
+  "crops": {
+    "cereals_and_grains": {
+      "metrics": { "seed_rate_kg_per_acre": 10, "spacing_cm": "75x30", "days_to_germination": 7, "days_to_maturity": 150 },
+      "diary_schedule": [
+        { "event": "First Weeding", "trigger": "planting", "offset_days": 21 },
+        { "event": "Top Dressing (CAN)", "trigger": "planting", "offset_days": 45 },
+        { "event": "Stalk Borer Scouting", "trigger": "recurring", "interval_days": 14 },
+        { "event": "Harvest Window", "trigger": "planting", "offset_days": 150 }
+      ],
+      "varieties": ["Maize (H614D, Duma 43)", "Wheat (KS Mwamba, Robin)", "Rice (Basmati 370)", "Sorghum (Gadam)", "Finger Millet", "Pearl Millet", "Barley"]
+    },
+    "pulses_and_legumes": {
+      "metrics": { "seed_rate_kg_per_acre": 25, "spacing_cm": "50x10", "days_to_germination": 6, "days_to_maturity": 85 },
+      "diary_schedule": [
+        { "event": "Early Weeding", "trigger": "planting", "offset_days": 14 },
+        { "event": "Aphid & Pod Borer Check", "trigger": "recurring", "interval_days": 10 },
+        { "event": "Harvesting & Shelling", "trigger": "planting", "offset_days": 85 }
+      ],
+      "varieties": ["Common Beans (Wairimu, Rosecoco)", "Green Grams (Ndengu)", "Cowpeas", "Pigeon Peas", "Groundnuts"]
+    },
+    "roots_and_tubers": {
+      "metrics": { "spacing_cm": "75x30", "days_to_germination": 14, "days_to_maturity": 120 },
+      "diary_schedule": [
+        { "event": "Earthing Up", "trigger": "planting", "offset_days": 30 },
+        { "event": "Late Blight Fungicide Spray", "trigger": "recurring", "interval_days": 14 },
+        { "event": "De-haulming", "trigger": "planting", "offset_days": 110 }
+      ],
+      "varieties": ["Irish Potatoes (Shangi)", "Sweet Potatoes", "Cassava", "Arrowroots (Nduma)"]
+    },
+    "industrial_cash_crops": {
+      "metrics": { "pruning_cycle_months": 12, "harvest_interval_days": 10 },
+      "diary_schedule": [
+        { "event": "Copper Fungicide Application", "trigger": "recurring", "interval_days": 90 },
+        { "event": "Pruning and Tipping", "trigger": "recurring", "interval_days": 365 },
+        { "event": "N P K Fertilizer Application", "trigger": "recurring", "interval_days": 180 }
+      ],
+      "varieties": ["Tea (Purple Tea)", "Coffee (SL 28, Ruiru 11)", "Sugarcane", "Sisal", "Cotton", "Pyrethrum", "Miraa (Khat)"]
+    },
+    "horticulture_and_export": {
+      "metrics": { "greenhouse_optimal_temp": 24, "harvest_window_days": 60 },
+      "diary_schedule": [
+        { "event": "Drip System Flush", "trigger": "recurring", "interval_days": 7 },
+        { "event": "Thrips & Whitefly Scouting", "trigger": "recurring", "interval_days": 3 },
+        { "event": "Maturity Picking Loop", "trigger": "recurring", "interval_days": 2 }
+      ],
+      "varieties": ["Cut Roses", "Summer Flowers", "French Beans", "Snow Peas & Sugar Snaps"]
+    },
+    "fruits": {
+      "metrics": { "years_to_first_bearing": 3, "spacing_meters": "5x5" },
+      "diary_schedule": [
+        { "event": "Manure Ring Replenishment", "trigger": "recurring", "interval_days": 180 },
+        { "event": "Fruit Fly Trap Inspection", "trigger": "recurring", "interval_days": 14 },
+        { "event": "Canopy Pruning", "trigger": "recurring", "interval_days": 365 }
+      ],
+      "varieties": ["Pawpaw (Papaya)", "Avocado (Hass, Fuerte)", "Banana (Tissue Culture)", "Mango (Apple Mango)", "Passion Fruit", "Pineapple"]
+    },
+    "oil_crops_and_nuts": {
+      "metrics": { "spacing_cm": "60x30", "days_to_maturity": 110 },
+      "diary_schedule": [
+        { "event": "Thinning Out", "trigger": "planting", "offset_days": 15 },
+        { "event": "Bird Scaring Phase", "trigger": "planting", "offset_days": 90 }
+      ],
+      "varieties": ["Macadamia Nuts", "Cashew Nuts", "Sunflower (Kenya Fedha)", "Ses Sesame (Simsim)", "Canola"]
+    },
+    "herbs_and_spices": {
+      "metrics": { "days_to_first_cut": 45, "recurring_cut_interval_days": 21 },
+      "diary_schedule": [
+        { "event": "Foliar Nutrition Spray", "trigger": "recurring", "interval_days": 14 },
+        { "event": "Harvest / First Pruning Cut", "trigger": "planting", "offset_days": 45 }
+      ],
+      "varieties": ["Culinary Herbs (Basil, Rosemary)", "Ginger & Garlic", "Aromatic & Medicinal"]
+    },
+    "vegetables": {
+      "metrics": { "nursery_days": 30, "days_to_maturity_from_transplant": 75, "spacing_cm": "60x40" },
+      "diary_schedule": [
+        { "event": "Nursery Sowing", "trigger": "nursery_start", "offset_days": 0 },
+        { "event": "Hardening Off in Nursery", "trigger": "nursery_start", "offset_days": 25 },
+        { "event": "Transplanting to Field", "trigger": "nursery_start", "offset_days": 30 },
+        { "event": "Staking and De-suckering", "trigger": "transplant", "offset_days": 21 }
+      ],
+      "varieties": ["Spinach", "Carrots", "Sukuma Wiki", "Cabbage", "Tomatoes (Anna F1)", "Onions", "Peppers & Capsicum"]
+    },
+    "indigenous_vegetables": {
+      "metrics": { "days_to_first_harvest": 30, "harvest_lifespan_days": 90 },
+      "diary_schedule": [
+        { "event": "Top Plucking to Induce Branching", "trigger": "planting", "offset_days": 25 },
+        { "event": "Weekly Leaf Harvesting Loop", "trigger": "recurring", "interval_days": 7 }
+      ],
+      "varieties": ["African Nightshade (Managu)", "Amaranth (Terere)", "Spider Plant (Saget)", "Cowpea Leaves (Kunde)"]
+    }
+  },
+  "forestry_and_timber": {
+    "commercial_agroforestry": {
+      "metrics": { "years_to_timber_maturity": 8, "spacing_meters": "2x2" },
+      "diary_schedule": [
+        { "event": "Termite Control Treatment", "trigger": "planting", "offset_days": 60 },
+        { "event": "Pruning Lower Branches", "trigger": "recurring", "interval_days": 365 },
+        { "event": "Thinning Out (50% Stock Removal)", "trigger": "planting", "offset_days": 1460 }
+      ],
+      "varieties": ["Eucalyptus (Blue Gum)", "Grevillea (Silky Oak)", "Cedar / Cypress", "Pine & Other Timbers"]
+    }
+  }
+}

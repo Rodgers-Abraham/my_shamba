@@ -5,7 +5,6 @@ import 'package:uuid/uuid.dart';
 import '../../core/error/failures.dart';
 import '../../domain/entities/harvest_entry.dart';
 import '../../domain/repositories/harvest_repository.dart';
-import '../models/harvest_model.dart';
 import '../local/models/isar_models.dart';
 
 class HarvestRepositoryImpl implements HarvestRepository {

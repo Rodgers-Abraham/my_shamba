@@ -169,6 +169,37 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   isDueDate: isDueDate,
                 );
                 context.read<CalendarBloc>().add(AddCalendarEntry(newEntry));
+
+                // Smart Diary Automated Cascades
+                final lowerTitle = titleCtrl.text.toLowerCase();
+                final baseDate = _selectedDay ?? DateTime.now();
+
+                if (lowerTitle.contains('insemination') || lowerTitle.contains('ai') || lowerTitle.contains('bull service')) {
+                  // Gestation logic (approx 283 days)
+                  context.read<CalendarBloc>().add(AddCalendarEntry(CalendarEntryEntity(
+                    id: '', farmId: widget.farmId, title: 'Dry Off: ${titleCtrl.text}',
+                    description: 'Stop milking 60 days before expected calving.',
+                    date: baseDate.add(const Duration(days: 223)), isDueDate: true,
+                  )));
+                  context.read<CalendarBloc>().add(AddCalendarEntry(CalendarEntryEntity(
+                    id: '', farmId: widget.farmId, title: 'Calving Prep: ${titleCtrl.text}',
+                    description: 'Move to maternity pen, monitor closely.',
+                    date: baseDate.add(const Duration(days: 276)), isDueDate: true,
+                  )));
+                  context.read<CalendarBloc>().add(AddCalendarEntry(CalendarEntryEntity(
+                    id: '', farmId: widget.farmId, title: 'Expected Calving: ${titleCtrl.text}',
+                    description: 'Expected calving date (283 days post-insemination).',
+                    date: baseDate.add(const Duration(days: 283)), isDueDate: true,
+                  )));
+                } else if (lowerTitle.contains('deworm') || lowerTitle.contains('vaccin')) {
+                  // Recurring health check logic (approx 90 days)
+                  context.read<CalendarBloc>().add(AddCalendarEntry(CalendarEntryEntity(
+                    id: '', farmId: widget.farmId, title: 'Next: ${titleCtrl.text}',
+                    description: 'Recurring 90-day health routine.',
+                    date: baseDate.add(const Duration(days: 90)), isDueDate: true,
+                  )));
+                }
+
                 Navigator.pop(context);
               },
               child: const Text('Save'),

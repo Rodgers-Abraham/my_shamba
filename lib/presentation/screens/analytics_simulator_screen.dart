@@ -38,7 +38,7 @@ class _AnalyticsSimulatorScreenState extends State<AnalyticsSimulatorScreen> {
               title: const Text('Overlay Rainfall Data'),
               subtitle: const Text('Shows blue bars behind the yield line'),
               value: _showRainfallOverlay,
-              activeColor: AppTheme.primary,
+              activeThumbColor: AppTheme.primary,
               onChanged: (val) {
                 HapticFeedback.selectionClick();
                 setState(() => _showRainfallOverlay = val);
@@ -98,7 +98,7 @@ class _AnalyticsSimulatorScreenState extends State<AnalyticsSimulatorScreen> {
               belowBarData: _showRainfallOverlay 
                 ? BarAreaData(
                     show: true,
-                    color: Colors.blue.withOpacity(0.3),
+                    color: Colors.blue.withValues(alpha: 0.3),
                     cutOffY: 0,
                     applyCutOffY: true,
                   ) 
@@ -118,12 +118,12 @@ class _AnalyticsSimulatorScreenState extends State<AnalyticsSimulatorScreen> {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [AppTheme.primary.withOpacity(0.9), AppTheme.accent.withOpacity(0.8)],
+          colors: [AppTheme.primary.withValues(alpha: 0.9), AppTheme.accent.withValues(alpha: 0.8)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(24),
-        boxShadow: [BoxShadow(color: AppTheme.primary.withOpacity(0.3), blurRadius: 15, offset: const Offset(0, 8))],
+        boxShadow: [BoxShadow(color: AppTheme.primary.withValues(alpha: 0.3), blurRadius: 15, offset: const Offset(0, 8))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,8 +139,8 @@ class _AnalyticsSimulatorScreenState extends State<AnalyticsSimulatorScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Est. Net Profit', style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 14)),
-              Text('KES ${projectedProfit.toStringAsFixed(0)}', style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 18, fontWeight: FontWeight.bold)),
+              Text('Est. Net Profit', style: TextStyle(color: Colors.white.withValues(alpha: 0.8), fontSize: 14)),
+              Text('KES ${projectedProfit.toStringAsFixed(0)}', style: TextStyle(color: Colors.white.withValues(alpha: 0.9), fontSize: 18, fontWeight: FontWeight.bold)),
             ],
           ),
           const Divider(color: Colors.white24, height: 32),

@@ -63,8 +63,8 @@ class _LedgerScreenState extends State<LedgerScreen> {
                           child: ListTile(
                             leading: CircleAvatar(
                               backgroundColor: entry.category == 'Income' 
-                                  ? AppTheme.success.withOpacity(0.1) 
-                                  : Colors.red.withOpacity(0.1),
+                                  ? AppTheme.success.withValues(alpha: 0.1) 
+                                  : Colors.red.withValues(alpha: 0.1),
                               child: Icon(
                                 entry.category == 'Income' ? Icons.arrow_downward : Icons.arrow_upward,
                                 color: entry.category == 'Income' ? AppTheme.success : Colors.red,
@@ -162,7 +162,7 @@ class _LedgerScreenState extends State<LedgerScreen> {
               color: AppTheme.primary,
               barWidth: 3,
               dotData: const FlDotData(show: false),
-              belowBarData: BarAreaData(show: true, color: AppTheme.primary.withOpacity(0.1)),
+              belowBarData: BarAreaData(show: true, color: AppTheme.primary.withValues(alpha: 0.1)),
             ),
             LineChartBarData(
               spots: const [

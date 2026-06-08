@@ -32,9 +32,18 @@ import 'data/repositories/calendar_repository_impl.dart';
 import 'domain/repositories/calendar_repository.dart';
 import 'presentation/bloc/calendar_bloc.dart';
 
+import 'core/services/notification_service.dart';
+import 'core/services/diary_service.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
+  // Services
+  final notificationService = NotificationService();
+  await notificationService.init();
+  sl.registerLazySingleton(() => notificationService);
+  sl.registerLazySingleton(() => DiaryService(sl()));
+
   // Local Database (Isar)
   final dir = await getApplicationDocumentsDirectory();
   final isar = await Isar.open(
@@ -58,7 +67,11 @@ Future<void> init() async {
   sl.registerFactory(() => AssetBloc(repository: sl()));
   sl.registerFactory(() => LedgerBloc(repository: sl()));
   sl.registerFactory(() => SupplyBloc(repository: sl()));
-  sl.registerFactory(() => CalendarBloc(repository: sl()));
+  sl.registerFactory(() => CalendarBloc(
+        repository: sl(),
+        notificationService: sl(),
+        diaryService: sl(),
+      ));
 
   // Repositories
   sl.registerLazySingleton<AuthRepository>(

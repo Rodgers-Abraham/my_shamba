@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/utils/inputs_parser.dart';
 import '../../domain/entities/asset_entity.dart';
 import '../bloc/asset_bloc.dart';
+import '../bloc/calendar_bloc.dart';
+import '../bloc/calendar_event.dart';
 import '../../core/theme/app_theme.dart';
 
 class AddAssetDialog extends StatefulWidget {
@@ -89,7 +91,7 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
-              value: _selectedCategory,
+              initialValue: _selectedCategory,
               items: categories
                   .map((c) => DropdownMenuItem(value: c, child: Text(c)))
                   .toList(),
@@ -108,7 +110,7 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
             const SizedBox(height: 16),
             if (subcategories.isNotEmpty)
               DropdownButtonFormField<String>(
-                value: _selectedSubcategory,
+                initialValue: _selectedSubcategory,
                 items: subcategories
                     .map((c) => DropdownMenuItem(value: c, child: Text(c)))
                     .toList(),
@@ -125,7 +127,7 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
             const SizedBox(height: 16),
             if (items.isNotEmpty)
               DropdownButtonFormField<String>(
-                value: _selectedItem,
+                initialValue: _selectedItem,
                 items: items
                     .map((c) => DropdownMenuItem(value: c, child: Text(c)))
                     .toList(),
@@ -141,7 +143,7 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
             const SizedBox(height: 16),
             if (varieties.isNotEmpty)
               DropdownButtonFormField<String>(
-                value: _selectedVariety,
+                initialValue: _selectedVariety,
                 items: varieties
                     .map((c) => DropdownMenuItem(value: c, child: Text(c)))
                     .toList(),
@@ -159,7 +161,7 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
             if (_selectedType == 'Livestock') ...[
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                value: _selectedStatus,
+                initialValue: _selectedStatus,
                 items: const [
                   DropdownMenuItem(value: 'Healthy', child: Text('Healthy')),
                   DropdownMenuItem(value: 'Pregnant', child: Text('Pregnant')),
@@ -266,8 +268,25 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
             }
 
             context.read<AssetBloc>().add(AddAsset(newAsset));
+
+            // Trigger Smart Diary Roadmap Generation
+            if (_selectedType == 'Livestock' && _selectedSubcategory != null && _selectedItem != null) {
+              context.read<CalendarBloc>().add(GenerateLivestockRoadmap(
+                animal: newAsset as LivestockEntity,
+                mainCategory: _selectedSubcategory!.toLowerCase(),
+                subCategory: _selectedItem!.toLowerCase().replaceAll(' ', '_'),
+                birthDate: DateTime.now(), // Assuming birth date is now if adding new
+              ));
+            } else if (_selectedType == 'Crops' && _selectedSubcategory != null) {
+               context.read<CalendarBloc>().add(GenerateCropRoadmap(
+                crop: newAsset as CropEntity,
+                category: _selectedSubcategory!.toLowerCase().replaceAll(' ', '_'),
+                plantingDate: DateTime.now(),
+              ));
+            }
+
             ScaffoldMessenger.of(context)
-                .showSnackBar(const SnackBar(content: Text('Asset Added! Streak Update 🔥'), backgroundColor: AppTheme.primary));
+                .showSnackBar(const SnackBar(content: Text('Asset Added! Roadmap Generated 🚀'), backgroundColor: AppTheme.primary));
             Navigator.pop(context);
           },
           child: const Text('Save'),

@@ -141,7 +141,7 @@ class _WorkshopScreenState extends State<WorkshopScreen> with SingleTickerProvid
             trailing: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: isLowInventory ? Colors.red.withOpacity(0.1) : AppTheme.primary.withOpacity(0.1),
+                color: isLowInventory ? Colors.red.withValues(alpha: 0.1) : AppTheme.primary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(

@@ -171,7 +171,7 @@ class _AddProductDialogState extends State<_AddProductDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             DropdownButtonFormField<String>(
-              value: _selectedTab,
+              initialValue: _selectedTab,
               items: const [
                 DropdownMenuItem(value: 'Produce', child: Text('Produce (Grains/Cereals)')),
                 DropdownMenuItem(value: 'Input', child: Text('Farm Input (Fertilizer/Seed)')),
@@ -189,7 +189,7 @@ class _AddProductDialogState extends State<_AddProductDialog> {
             const SizedBox(height: 16),
             if (subcategories.isNotEmpty)
               DropdownButtonFormField<String>(
-                value: _selectedSubcategory,
+                initialValue: _selectedSubcategory,
                 items: subcategories.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
                 onChanged: (val) => setState(() { _selectedSubcategory = val; _selectedItem = null; }),
                 decoration: const InputDecoration(labelText: 'Subcategory'),
@@ -198,7 +198,7 @@ class _AddProductDialogState extends State<_AddProductDialog> {
             const SizedBox(height: 16),
             if (items.isNotEmpty)
               DropdownButtonFormField<String>(
-                value: _selectedItem,
+                initialValue: _selectedItem,
                 items: items.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
                 onChanged: (val) => setState(() => _selectedItem = val),
                 decoration: const InputDecoration(labelText: 'Item'),
